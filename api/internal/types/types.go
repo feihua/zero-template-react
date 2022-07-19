@@ -477,6 +477,7 @@ type MenuUserList struct {
 	Path     string `json:"path"`
 	ApiUrl   string `json:"apiUrl"`
 	MenuType int64  `json:"menuType"`
+	Icon     string `json:"icon"`
 }
 
 type EnumReq struct {

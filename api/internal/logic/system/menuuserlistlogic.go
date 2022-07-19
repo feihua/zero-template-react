@@ -69,6 +69,7 @@ func (l *MenuUserListLogic) MenuUserList() (resp *types.MenuUserListResp, err er
 				Path:     menu.MenuUrl,
 				ApiUrl:   menu.ApiUrl,
 				MenuType: menu.MenuType,
+				Icon:     menu.MenuIcon.String,
 			})
 		}
 
