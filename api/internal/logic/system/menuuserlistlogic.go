@@ -92,6 +92,7 @@ func (l *MenuUserListLogic) MenuUserList() (resp *types.MenuUserListResp, err er
 		Data: types.MenuUserData{
 			SysMenu: list,
 			Avatar:  "https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png",
+			Name:    userInfo.RealName,
 		},
 	}, nil
 }
