@@ -57,8 +57,9 @@ func (l *UserLoginLogic) UserLogin(req *types.UserLoginReq) (resp *types.UserLog
 	jwtToken, _ := l.getJwtToken(accessSecret, now, accessExpire, userInfo.Id)
 
 	return &types.UserLoginResp{
-		Code: 200,
-		Msg:  "",
+		Code:   200,
+		Msg:    "",
+		Status: "ok",
 		Data: types.UserLoginData{
 			UserNo: userInfo.UserNo,
 			Mobile: userInfo.Mobile,

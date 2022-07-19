@@ -7,9 +7,10 @@ type UserLoginReq struct {
 }
 
 type UserLoginResp struct {
-	Code int64         `json:"code"`
-	Msg  string        `json:"msg"`
-	Data UserLoginData `json:"data"`
+	Code   int64         `json:"code"`
+	Msg    string        `json:"msg"`
+	Status string        `json:"status"`
+	Data   UserLoginData `json:"data"`
 }
 
 type UserLoginData struct {
