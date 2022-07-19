@@ -131,7 +131,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Handler: system.MenuRoleSaveHandler(serverCtx),
 				},
 				{
-					Method:  http.MethodPost,
+					Method:  http.MethodGet,
 					Path:    "/menu/user/list",
 					Handler: system.MenuUserListHandler(serverCtx),
 				},

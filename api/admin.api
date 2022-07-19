@@ -543,7 +543,7 @@ service admin {
 	@handler menuRoleSave
 	post /menu/role/save(MenuRoleSaveReq) returns (MenuRoleSaveResp)
 	@handler menuUserList
-	post /menu/user/list returns (MenuUserListResp)
+	get /menu/user/list returns (MenuUserListResp)
 	
 	@handler enumList
 	post /enum/list(EnumReq) returns (EnumResp)
