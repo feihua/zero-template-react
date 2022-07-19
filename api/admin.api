@@ -1,0 +1,559 @@
+syntax = "v1"
+
+info(
+	title: "zero-template-react"
+	desc: "vue版本模板"
+	author: "liufeihua"
+	email: "1002219331@qq.com"
+	version: "v1.0"
+)
+
+type UserLoginReq {
+	Mobile   string `json:"mobile"`
+	Password string `json:"password"`
+}
+
+type UserLoginResp {
+	Code int64         `json:"code"`
+	Msg  string        `json:"msg"`
+	Data UserLoginData `json:"data"`
+}
+
+type UserLoginData {
+	UserNo int64  `json:"userNo"`
+	Mobile string `json:"mobile"`
+	Token  string `json:"token"`
+}
+
+type UserListReq {
+	PageCurrent int64  `json:"pageCurrent,default=10"`
+	PageSize    int64  `json:"pageSize"`
+	Mobile      string `json:"mobile,optional"`
+}
+
+type UserListResp {
+	Code int64        `json:"code"`
+	Msg  string       `json:"msg"`
+	Data UserListData `json:"data"`
+}
+
+type UserListData {
+	List        []UserList `json:"list"`
+	TotalCount  int64      `json:"totalCount"`
+	TotalPage   int64      `json:"totalPage"`
+	PageCurrent int64      `json:"pageCurrent"`
+	PageSize    int64      `json:"pageSize"`
+}
+
+type UserList {
+	Id       int64  `json:"id"`
+	StatusID int64  `json:"statusId"`
+	Sort     int64  `json:"sort"`
+	UserNo   int64  `json:"userNo"`
+	Mobile   string `json:"mobile"`
+	RealName string `json:"realName"`
+	Remark   string `json:"remark"`
+}
+
+type UserViewReq {
+	Id int64 `json:"id"`
+}
+type UserViewResp {
+	Code int64        `json:"code"`
+	Msg  string       `json:"msg"`
+	Data UserViewData `json:"data"`
+}
+type UserViewData {
+	Id       int64  `json:"id"`
+	StatusID int64  `json:"statusId"`
+	Sort     int64  `json:"sort"`
+	UserNo   int64  `json:"userNo"`
+	Mobile   string `json:"mobile"`
+	RealName string `json:"realName"`
+	Remark   string `json:"remark"`
+}
+
+type UserSaveReq {
+	Mobile   string `json:"mobile"`
+	RealName string `json:"realName"`
+	Remark   string `json:"remark"`
+}
+type UserSaveResp {
+	Timestamp string `json:"timestamp"`
+	Path      string `json:"path"`
+	Status    int64  `json:"status"`
+	Error     string `json:"error"`
+	Message   string `json:"message"`
+	RequestID string `json:"requestId"`
+	Code      int64  `json:"code"`
+	Msg       string `json:"msg"`
+}
+
+type UserUpdateReq {
+	Id       int64  `json:"id"`
+	Mobile   string `json:"mobile"`
+	RealName string `json:"realName"`
+	Remark   string `json:"remark"`
+	StatusID int64  `json:"statusId"`
+	Sort     int64  `json:"sort"`
+}
+type UserUpdateResp {
+	Timestamp string `json:"timestamp"`
+	Path      string `json:"path"`
+	Status    int64  `json:"status"`
+	Error     string `json:"error"`
+	Message   string `json:"message"`
+	RequestID string `json:"requestId"`
+	Code      int64  `json:"code"`
+	Msg       string `json:"msg"`
+}
+
+type UserStatusUpdateReq {
+	Id       int64 `json:"id"`
+	StatusID int64 `json:"statusId"`
+}
+type UserStatusUpdateResp {
+	Timestamp string `json:"timestamp"`
+	Path      string `json:"path"`
+	Status    int64  `json:"status"`
+	Error     string `json:"error"`
+	Message   string `json:"message"`
+	RequestID string `json:"requestId"`
+	Code      int64  `json:"code"`
+	Msg       string `json:"msg"`
+}
+
+type UserDeleteReq {
+	Id int64 `json:"id"`
+}
+type UserDeleteResp {
+	Timestamp string `json:"timestamp"`
+	Path      string `json:"path"`
+	Status    int64  `json:"status"`
+	Error     string `json:"error"`
+	Message   string `json:"message"`
+	RequestID string `json:"requestId"`
+	Code      int64  `json:"code"`
+	Msg       string `json:"msg"`
+}
+
+type UserUpdatePasswordReq {
+	AdminUserNo int64  `json:"adminUserNo"`
+	MobilePsw   string `json:"mobilePsw"`
+	RePwd       string `json:"rePwd"`
+}
+type UserUpdatePasswordResp {
+	Timestamp string `json:"timestamp"`
+	Path      string `json:"path"`
+	Status    int64  `json:"status"`
+	Error     string `json:"error"`
+	Message   string `json:"message"`
+	RequestID string `json:"requestId"`
+	Code      int64  `json:"code"`
+	Msg       string `json:"msg"`
+}
+
+type RoleListReq {
+	PageCurrent int64  `json:"pageCurrent,default=10"`
+	PageSize    int64  `json:"pageSize"`
+	StatusID    int64  `json:"statusId,optional"`
+	RoleName    string `json:"roleName,optional"`
+}
+
+type RoleListResp {
+	Code int64        `json:"code"`
+	Msg  string       `json:"msg"`
+	Data RoleListData `json:"data"`
+}
+
+type RoleListData {
+	List        []RoleList `json:"list"`
+	TotalCount  int64      `json:"totalCount"`
+	TotalPage   int64      `json:"totalPage"`
+	PageCurrent int64      `json:"pageCurrent"`
+	PageSize    int64      `json:"pageSize"`
+}
+
+type RoleList {
+	Id       int64  `json:"id"`
+	StatusID int64  `json:"statusId"`
+	Sort     int64  `json:"sort"`
+	RoleName string `json:"roleName"`
+	Remark   string `json:"remark"`
+}
+
+type RoleViewReq {
+	Id int64 `json:"id"`
+}
+type RoleViewResp {
+	Code int64        `json:"code"`
+	Msg  string       `json:"msg"`
+	Data RoleViewData `json:"data"`
+}
+type RoleViewData {
+	Id       int64  `json:"id"`
+	StatusID int64  `json:"statusId"`
+	Sort     int64  `json:"sort"`
+	RoleName string `json:"roleName"`
+	Remark   string `json:"remark"`
+}
+
+type RoleSaveReq {
+	RoleName string `json:"roleName"`
+	Remark   string `json:"remark"`
+}
+type RoleSaveResp {
+	Timestamp string `json:"timestamp"`
+	Path      string `json:"path"`
+	Status    int64  `json:"status"`
+	Error     string `json:"error"`
+	Message   string `json:"message"`
+	RequestID string `json:"requestId"`
+	Code      int64  `json:"code"`
+	Msg       string `json:"msg"`
+}
+
+type RoleUpdateReq {
+	Id       int64  `json:"id"`
+	RoleName string `json:"roleName"`
+	Remark   string `json:"remark"`
+	StatusID int64  `json:"statusId"`
+	Sort     int64  `json:"sort"`
+}
+type RoleUpdateResp {
+	Timestamp string `json:"timestamp"`
+	Path      string `json:"path"`
+	Status    int64  `json:"status"`
+	Error     string `json:"error"`
+	Message   string `json:"message"`
+	RequestID string `json:"requestId"`
+	Code      int64  `json:"code"`
+	Msg       string `json:"msg"`
+}
+
+type RoleStatusUpdateReq {
+	Id       int64 `json:"id"`
+	StatusID int64 `json:"statusId"`
+}
+type RoleStatusUpdateResp {
+	Timestamp string `json:"timestamp"`
+	Path      string `json:"path"`
+	Status    int64  `json:"status"`
+	Error     string `json:"error"`
+	Message   string `json:"message"`
+	RequestID string `json:"requestId"`
+	Code      int64  `json:"code"`
+	Msg       string `json:"msg"`
+}
+
+type RoleDeleteReq {
+	Id int64 `json:"id"`
+}
+type RoleDeleteResp {
+	Timestamp string `json:"timestamp"`
+	Path      string `json:"path"`
+	Status    int64  `json:"status"`
+	Error     string `json:"error"`
+	Message   string `json:"message"`
+	RequestID string `json:"requestId"`
+	Code      int64  `json:"code"`
+	Msg       string `json:"msg"`
+}
+
+type RoleUserListReq {
+	UserId int64 `json:"userId"`
+}
+
+type RoleUserListResp {
+	Code int64            `json:"code"`
+	Msg  string           `json:"msg"`
+	Data RoleUserListData `json:"data"`
+}
+
+type RoleUserListData {
+	List []RoleUserList `json:"list"`
+}
+
+type RoleUserList {
+	Id       int64  `json:"id"`
+	StatusID int64  `json:"statusId"`
+	Sort     int64  `json:"sort"`
+	RoleName string `json:"roleName"`
+	Remark   string `json:"remark"`
+}
+
+type RoleUserSaveReq {
+	UserId int64   `json:"userId"`
+	RoleId []int64 `json:"roleId"`
+}
+type RoleUserSaveResp {
+	Timestamp string `json:"timestamp"`
+	Path      string `json:"path"`
+	Status    int64  `json:"status"`
+	Error     string `json:"error"`
+	Message   string `json:"message"`
+	RequestID string `json:"requestId"`
+	Code      int64  `json:"code"`
+	Msg       string `json:"msg"`
+}
+
+type MenuListReq {
+	MenuName string `json:"menuName,optional"`
+}
+type MenuListResp {
+	Code int64        `json:"code"`
+	Msg  string       `json:"msg"`
+	Data MenuListData `json:"data"`
+}
+
+type MenuListData {
+	SysMenu []MenuList `json:"sysMenu"`
+}
+
+type MenuList {
+	Id       int64  `json:"id"`
+	StatusID int64  `json:"statusId"`
+	Sort     int64  `json:"sort"`
+	ParentID int64  `json:"parentId"`
+	MenuName string `json:"menuName"`
+	Label    string `json:"label"`
+	MenuURL  string `json:"menuUrl"`
+	//	MenuIcon   interface{} `json:"menuIcon"`
+	ApiUrl string `json:"apiUrl"`
+	Remark string `json:"remark"`
+	//	HiddenType interface{} `json:"hiddenType"`
+	MenuType int64 `json:"menuType"`
+}
+
+type MenuViewReq {
+	Id int64 `json:"id"`
+}
+type MenuViewResp {
+	Code int64        `json:"code"`
+	Msg  string       `json:"msg"`
+	Data MenuViewData `json:"data"`
+}
+type MenuViewData {
+	Id       int64  `json:"id"`
+	StatusID int64  `json:"statusId"`
+	Sort     int64  `json:"sort"`
+	ParentID int64  `json:"parentId"`
+	MenuName string `json:"menuName"`
+	Label    string `json:"label"`
+	MenuURL  string `json:"menuUrl"`
+	//	MenuIcon   interface{} `json:"menuIcon"`
+	ApiUrl string `json:"apiUrl"`
+	Remark string `json:"remark"`
+	//	HiddenType interface{} `json:"hiddenType"`
+	MenuType int64 `json:"menuType"`
+}
+type MenuSaveReq {
+	MenuName string `json:"menuName"`
+	MenuType int64  `json:"menuType"`
+	MenuUrl  string `json:"menuUrl"`
+	ParentId int64  `json:"parentId"`
+	Remark   string `json:"remark"`
+	Sort     int64  `json:"sort"`
+}
+type MenuSaveResp {
+	Timestamp string `json:"timestamp"`
+	Path      string `json:"path"`
+	Status    int64  `json:"status"`
+	Error     string `json:"error"`
+	Message   string `json:"message"`
+	RequestID string `json:"requestId"`
+	Code      int64  `json:"code"`
+	Msg       string `json:"msg"`
+}
+
+type MenuUpdateReq {
+	Id       int64  `json:"id"`
+	StatusId int64  `json:"statusId"`
+	Sort     int64  `json:"sort"`
+	ParentId int64  `json:"parentId"`
+	MenuName string `json:"menuName"`
+	Label    string `json:"label"`
+	MenuUrl  string `json:"menuUrl"`
+	//	MenuIcon   interface{} `json:"menuIcon"`
+	ApiUrl string `json:"apiUrl"`
+	Remark string `json:"remark"`
+	//	HiddenType interface{} `json:"hiddenType"`
+	MenuType int64 `json:"menuType"`
+}
+type MenuUpdateResp {
+	Timestamp string `json:"timestamp"`
+	Path      string `json:"path"`
+	Status    int64  `json:"status"`
+	Error     string `json:"error"`
+	Message   string `json:"message"`
+	RequestID string `json:"requestId"`
+	Code      int64  `json:"code"`
+	Msg       string `json:"msg"`
+}
+
+type MenuStatusUpdateReq {
+	Id       int64 `json:"id"`
+	StatusID int64 `json:"statusId"`
+}
+type MenuStatusUpdateResp {
+	Timestamp string `json:"timestamp"`
+	Path      string `json:"path"`
+	Status    int64  `json:"status"`
+	Error     string `json:"error"`
+	Message   string `json:"message"`
+	RequestID string `json:"requestId"`
+	Code      int64  `json:"code"`
+	Msg       string `json:"msg"`
+}
+
+type MenuDeleteReq {
+	Id int64 `json:"id"`
+}
+type MenuDeleteResp {
+	Timestamp string `json:"timestamp"`
+	Path      string `json:"path"`
+	Status    int64  `json:"status"`
+	Error     string `json:"error"`
+	Message   string `json:"message"`
+	RequestID string `json:"requestId"`
+	Code      int64  `json:"code"`
+	Msg       string `json:"msg"`
+}
+
+type MenuRoleListReq {
+	RoleId int64 `json:"roleId"`
+}
+
+type MenuRoleListResp {
+	Code int64            `json:"code"`
+	Msg  string           `json:"msg"`
+	Data MenuRoleListData `json:"data"`
+}
+
+type MenuRoleListData {
+	List []int64 `json:"list"`
+}
+
+type MenuRoleSaveReq {
+	MenuId []int64 `json:"menuId"`
+	RoleId int64   `json:"roleId"`
+}
+type MenuRoleSaveResp {
+	Timestamp string `json:"timestamp"`
+	Path      string `json:"path"`
+	Status    int64  `json:"status"`
+	Error     string `json:"error"`
+	Message   string `json:"message"`
+	RequestID string `json:"requestId"`
+	Code      int64  `json:"code"`
+	Msg       string `json:"msg"`
+}
+
+type MenuUserListResp {
+	Code int64        `json:"code"`
+	Msg  string       `json:"msg"`
+	Data MenuUserData `json:"data"`
+}
+
+type MenuUserData {
+	SysMenu []MenuUserList `json:"sysMenu"`
+}
+
+type MenuUserList {
+	Id       int64  `json:"id"`
+	ParentId int64  `json:"parentId"`
+	Name     string `json:"name"`
+	Path     string `json:"path"`
+	ApiUrl   string `json:"apiUrl"`
+	MenuType int64  `json:"menuType"`
+}
+
+type EnumReq {
+	EnumName string `json:"enumName"`
+}
+
+type EnumResp {
+	Code int64      `json:"code"`
+	Msg  string     `json:"msg"`
+	Data []EnumData `json:"data"`
+}
+
+type EnumData {
+	Code  int64  `json:"code"`
+	Color string `json:"color"`
+	Name  string `json:"name"`
+	Desc  string `json:"desc"`
+}
+
+@server(
+	jwt: Auth
+	middleware: CheckUrl
+	group: system
+	prefix: /apis/system/pc/sys
+)
+service admin {
+	
+	@handler userList
+	post /user/list(UserListReq) returns (UserListResp)
+	@handler userView
+	post /user/view(UserViewReq) returns (UserViewResp)
+	@handler userSave
+	post /user/save(UserSaveReq) returns (UserSaveResp)
+	@handler userUpdate
+	post /user/update(UserUpdateReq) returns (UserUpdateResp)
+	@handler userStatusUpdate
+	post /user/updateStatus(UserStatusUpdateReq) returns (UserStatusUpdateResp)
+	@handler userDelete
+	post /user/delete(UserDeleteReq) returns (UserDeleteResp)
+	@handler userUpdatePassword
+	post /user/update/password(UserUpdatePasswordReq) returns (UserUpdatePasswordResp)
+	
+	@handler roleList
+	post /role/list(RoleListReq) returns (RoleListResp)
+	@handler roleView
+	post /role/view(RoleViewReq) returns (RoleViewResp)
+	@handler roleSave
+	post /role/save(RoleSaveReq) returns (RoleSaveResp)
+	@handler roleUpdate
+	post /role/update(RoleUpdateReq) returns (RoleUpdateResp)
+	@handler roleStatusUpdate
+	post /role/updateStatus(RoleStatusUpdateReq) returns (RoleStatusUpdateResp)
+	@handler roleDelete
+	post /role/delete(RoleDeleteReq) returns (RoleDeleteResp)
+	@handler roleUserList
+	post /role/user/list(RoleUserListReq) returns (RoleUserListResp)
+	@handler roleUserSave
+	post /role/user/save(RoleUserSaveReq) returns (RoleUserSaveResp)
+	
+	@handler menuList
+	post /menu/list(MenuListReq) returns (MenuListResp)
+	@handler menuView
+	post /menu/view(MenuViewReq) returns (MenuViewResp)
+	@handler menuSave
+	post /menu/save(MenuSaveReq) returns (MenuSaveResp)
+	@handler menuUpdate
+	post /menu/update(MenuUpdateReq) returns (MenuUpdateResp)
+	@handler menuStatusUpdate
+	post /menu/updateStatus(MenuStatusUpdateReq) returns (MenuStatusUpdateResp)
+	@handler menuDelete
+	post /menu/delete(MenuDeleteReq) returns (MenuDeleteResp)
+	@handler menuRoleList
+	post /menu/role/list(MenuRoleListReq) returns (MenuRoleListResp)
+	@handler menuRoleSave
+	post /menu/role/save(MenuRoleSaveReq) returns (MenuRoleSaveResp)
+	@handler menuUserList
+	post /menu/user/list returns (MenuUserListResp)
+	
+	@handler enumList
+	post /enum/list(EnumReq) returns (EnumResp)
+	
+}
+
+@server(
+	group: system
+	prefix: /apis/system/pc/sys
+)
+service admin {
+	@handler userLogin
+	post /user/login/password(UserLoginReq) returns (UserLoginResp)
+}
