@@ -458,6 +458,7 @@ type MenuUserListResp {
 
 type MenuUserData {
 	SysMenu []MenuUserList `json:"sysMenu"`
+	Avatar  string         `json:"avatar"`
 }
 
 type MenuUserList {
