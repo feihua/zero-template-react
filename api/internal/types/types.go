@@ -20,23 +20,19 @@ type UserLoginData struct {
 }
 
 type UserListReq struct {
-	PageCurrent int64  `json:"pageCurrent,default=10"`
-	PageSize    int64  `json:"pageSize"`
-	Mobile      string `json:"mobile,optional"`
+	Current  int64  `json:"current,default=1"`
+	PageSize int64  `json:"pageSize,default=20"`
+	Mobile   string `json:"mobile,optional"`
 }
 
 type UserListResp struct {
-	Code int64        `json:"code"`
-	Msg  string       `json:"msg"`
-	Data UserListData `json:"data"`
-}
-
-type UserListData struct {
-	List        []UserList `json:"list"`
-	TotalCount  int64      `json:"totalCount"`
-	TotalPage   int64      `json:"totalPage"`
-	PageCurrent int64      `json:"pageCurrent"`
-	PageSize    int64      `json:"pageSize"`
+	Code     int64      `json:"code"`
+	Msg      string     `json:"msg"`
+	Data     []UserList `json:"data"`
+	Current  int64      `json:"current,default=1"`
+	PageSize int64      `json:"pageSize,default=20"`
+	Success  bool       `json:"success"`
+	Total    int64      `json:"total"`
 }
 
 type UserList struct {
@@ -155,24 +151,20 @@ type UserUpdatePasswordResp struct {
 }
 
 type RoleListReq struct {
-	PageCurrent int64  `json:"pageCurrent,default=10"`
-	PageSize    int64  `json:"pageSize"`
-	StatusID    int64  `json:"statusId,optional"`
-	RoleName    string `json:"roleName,optional"`
+	Current  int64  `json:"current,default=1"`
+	PageSize int64  `json:"pageSize,default=20"`
+	StatusID int64  `json:"statusId,optional"`
+	RoleName string `json:"roleName,optional"`
 }
 
 type RoleListResp struct {
-	Code int64        `json:"code"`
-	Msg  string       `json:"msg"`
-	Data RoleListData `json:"data"`
-}
-
-type RoleListData struct {
-	List        []RoleList `json:"list"`
-	TotalCount  int64      `json:"totalCount"`
-	TotalPage   int64      `json:"totalPage"`
-	PageCurrent int64      `json:"pageCurrent"`
-	PageSize    int64      `json:"pageSize"`
+	Code     int64      `json:"code"`
+	Msg      string     `json:"msg"`
+	Data     []RoleList `json:"data"`
+	Current  int64      `json:"current,default=1"`
+	PageSize int64      `json:"pageSize,default=20"`
+	Success  bool       `json:"success"`
+	Total    int64      `json:"total"`
 }
 
 type RoleList struct {

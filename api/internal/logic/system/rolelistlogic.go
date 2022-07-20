@@ -26,7 +26,7 @@ func NewRoleListLogic(ctx context.Context, svcCtx *svc.ServiceContext) RoleListL
 
 func (l *RoleListLogic) RoleList(req types.RoleListReq) (resp *types.RoleListResp, err error) {
 	count, _ := l.svcCtx.RoleModel.Count(l.ctx)
-	roleList, err := l.svcCtx.RoleModel.FindAll(l.ctx, req.PageCurrent, req.PageSize, req.RoleName)
+	roleList, err := l.svcCtx.RoleModel.FindAll(l.ctx, req.Current, req.PageSize, req.RoleName)
 
 	if err != nil {
 		return nil, errorx.NewDefaultError("查询角色列表异常")
@@ -44,14 +44,12 @@ func (l *RoleListLogic) RoleList(req types.RoleListReq) (resp *types.RoleListRes
 	}
 
 	return &types.RoleListResp{
-		Code: 200,
-		Msg:  "",
-		Data: types.RoleListData{
-			List:        list,
-			TotalCount:  count,
-			TotalPage:   0,
-			PageCurrent: req.PageCurrent,
-			PageSize:    req.PageSize,
-		},
+		Code:     200,
+		Msg:      "",
+		Data:     list,
+		Current:  req.Current,
+		PageSize: req.PageSize,
+		Success:  true,
+		Total:    count,
 	}, nil
 }

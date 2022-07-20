@@ -24,7 +24,7 @@ func NewUserListLogic(ctx context.Context, svcCtx *svc.ServiceContext) UserListL
 
 func (l *UserListLogic) UserList(req types.UserListReq) (resp *types.UserListResp, err error) {
 
-	userList, _ := l.svcCtx.UserModel.FindAll(l.ctx, req.PageCurrent, req.PageSize, req.Mobile)
+	userList, _ := l.svcCtx.UserModel.FindAll(l.ctx, req.Current, req.PageSize, req.Mobile)
 	count, _ := l.svcCtx.UserModel.Count(l.ctx, req.Mobile)
 
 	var list []types.UserList
@@ -42,14 +42,12 @@ func (l *UserListLogic) UserList(req types.UserListReq) (resp *types.UserListRes
 	}
 
 	return &types.UserListResp{
-		Code: 200,
-		Msg:  "",
-		Data: types.UserListData{
-			List:        list,
-			TotalCount:  count,
-			TotalPage:   0,
-			PageCurrent: req.PageCurrent,
-			PageSize:    req.PageSize,
-		},
+		Code:     200,
+		Msg:      "",
+		Data:     list,
+		Current:  req.Current,
+		PageSize: req.PageSize,
+		Success:  true,
+		Total:    count,
 	}, nil
 }
