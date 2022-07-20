@@ -46,13 +46,15 @@ func (l *MenuUserListLogic) MenuUserList() (resp *types.MenuUserListResp, err er
 
 	var menuList *[]model.SysMenu
 
-	if userId == 1 {
+	roleUser, _ := l.svcCtx.RoleUserModel.FindAllByUserId(l.ctx, userId)
+	if userId == 1 || roleUser != nil { //默认管理员,或者后来分配的
 		menuList, _ = l.svcCtx.MenuModel.FindAll(l.ctx, "")
 	} else {
 		menuList, err = l.svcCtx.MenuModel.FindAllByUserId(l.ctx, userId)
 		if err != nil {
 			logx.WithContext(l.ctx).Errorf("用户: %s,还没有权限,请求联系管理员", strconv.FormatInt(userId, 10))
 			return nil, errorx.NewDefaultError("还没有权限,请求联系管理员")
+
 		}
 	}
 
