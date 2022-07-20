@@ -10,3 +10,4 @@ create table sys_menu_role
     role_id      bigint unsigned                            not null comment '角色ID'
 )
     comment '菜单角色关联表' charset = utf8mb4;
+
