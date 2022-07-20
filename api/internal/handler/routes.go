@@ -47,7 +47,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodPost,
-					Path:    "/user/update/password",
+					Path:    "/user/updatePassword",
 					Handler: system.UserUpdatePasswordHandler(serverCtx),
 				},
 				{
@@ -82,12 +82,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodPost,
-					Path:    "/role/user/list",
+					Path:    "/role/userRoleList",
 					Handler: system.RoleUserListHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
-					Path:    "/role/user/save",
+					Path:    "/role/userRoleSave",
 					Handler: system.RoleUserSaveHandler(serverCtx),
 				},
 				{
@@ -122,17 +122,17 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodPost,
-					Path:    "/menu/role/list",
+					Path:    "/menu/roleMenuList",
 					Handler: system.MenuRoleListHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
-					Path:    "/menu/role/save",
+					Path:    "/menu/roleMenuSave",
 					Handler: system.MenuRoleSaveHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodGet,
-					Path:    "/menu/user/list",
+					Path:    "/menu/userMenuList",
 					Handler: system.MenuUserListHandler(serverCtx),
 				},
 				{
@@ -150,10 +150,10 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		[]rest.Route{
 			{
 				Method:  http.MethodPost,
-				Path:    "/user/login/password",
+				Path:    "/user/login",
 				Handler: system.UserLoginHandler(serverCtx),
 			},
 		},
-		rest.WithPrefix("/apis/system/pc/sys"),
+		rest.WithPrefix("/api/system"),
 	)
 }

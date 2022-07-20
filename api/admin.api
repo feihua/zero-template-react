@@ -510,7 +510,7 @@ service admin {
 	@handler userDelete
 	post /user/delete(UserDeleteReq) returns (UserDeleteResp)
 	@handler userUpdatePassword
-	post /user/update/password(UserUpdatePasswordReq) returns (UserUpdatePasswordResp)
+	post /user/updatePassword(UserUpdatePasswordReq) returns (UserUpdatePasswordResp)
 	
 	@handler roleList
 	post /role/list(RoleListReq) returns (RoleListResp)
@@ -525,9 +525,9 @@ service admin {
 	@handler roleDelete
 	post /role/delete(RoleDeleteReq) returns (RoleDeleteResp)
 	@handler roleUserList
-	post /role/user/list(RoleUserListReq) returns (RoleUserListResp)
+	post /role/userRoleList(RoleUserListReq) returns (RoleUserListResp)
 	@handler roleUserSave
-	post /role/user/save(RoleUserSaveReq) returns (RoleUserSaveResp)
+	post /role/userRoleSave(RoleUserSaveReq) returns (RoleUserSaveResp)
 	
 	@handler menuList
 	post /menu/list(MenuListReq) returns (MenuListResp)
@@ -542,11 +542,11 @@ service admin {
 	@handler menuDelete
 	post /menu/delete(MenuDeleteReq) returns (MenuDeleteResp)
 	@handler menuRoleList
-	post /menu/role/list(MenuRoleListReq) returns (MenuRoleListResp)
+	post /menu/roleMenuList(MenuRoleListReq) returns (MenuRoleListResp)
 	@handler menuRoleSave
-	post /menu/role/save(MenuRoleSaveReq) returns (MenuRoleSaveResp)
+	post /menu/roleMenuSave(MenuRoleSaveReq) returns (MenuRoleSaveResp)
 	@handler menuUserList
-	get /menu/user/list returns (MenuUserListResp)
+	get /menu/userMenuList returns (MenuUserListResp)
 	
 	@handler enumList
 	post /enum/list(EnumReq) returns (EnumResp)
@@ -555,9 +555,9 @@ service admin {
 
 @server(
 	group: system
-	prefix: /apis/system/pc/sys
+	prefix: /api/system
 )
 service admin {
 	@handler userLogin
-	post /user/login/password(UserLoginReq) returns (UserLoginResp)
+	post /user/login(UserLoginReq) returns (UserLoginResp)
 }
