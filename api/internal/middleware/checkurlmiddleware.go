@@ -30,12 +30,12 @@ func (m *CheckUrlMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 
-		if r.RequestURI == "/apis/system/pc/sys/menu/user/list" {
+		if r.RequestURI == "/api/system/menu/userMenuList" {
 			logx.Infof("用户userId: %s,访问: %s路径", userId, r.RequestURI)
 			next(w, r)
 		} else {
 			//获取用户能访问的url
-			urls, err := m.Redis.Get(fmt.Sprintf("react-vue:%s",userId))
+			urls, err := m.Redis.Get(fmt.Sprintf("react-vue:%s", userId))
 			if err != nil {
 				logx.Errorf("用户：%s,获取redis连接异常", userId)
 				httpx.Error(w, errorx.NewDefaultError(fmt.Sprintf("用户：%s,获取redis连接异常", userId)))
