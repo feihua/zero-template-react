@@ -493,7 +493,7 @@ type EnumData {
 	jwt: Auth
 	middleware: CheckUrl
 	group: system
-	prefix: /apis/system/pc/sys
+	prefix: /api/system
 )
 service admin {
 	

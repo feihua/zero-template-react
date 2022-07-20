@@ -143,7 +143,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			}...,
 		),
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
-		rest.WithPrefix("/apis/system/pc/sys"),
+		rest.WithPrefix("/api/system"),
 	)
 
 	server.AddRoutes(
