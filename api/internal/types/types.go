@@ -456,6 +456,7 @@ type MenuUserListResp struct {
 
 type MenuUserData struct {
 	SysMenu []MenuUserList `json:"sysMenu"`
+	BtnMenu []string       `json:"btnMenu"`
 	Avatar  string         `json:"avatar"`
 	Name    string         `json:"name"`
 }

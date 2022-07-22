@@ -59,6 +59,7 @@ func (l *MenuUserListLogic) MenuUserList() (resp *types.MenuUserListResp, err er
 	}
 
 	var list []types.MenuUserList
+	var btnList []string
 
 	var apiUrls []string
 
@@ -73,6 +74,10 @@ func (l *MenuUserListLogic) MenuUserList() (resp *types.MenuUserListResp, err er
 				MenuType: menu.MenuType,
 				Icon:     menu.MenuIcon.String,
 			})
+		}
+
+		if menu.MenuType == 3 {
+			btnList = append(btnList, menu.ApiUrl)
 		}
 
 		if len(strings.TrimSpace(menu.ApiUrl)) != 0 {
@@ -93,6 +98,7 @@ func (l *MenuUserListLogic) MenuUserList() (resp *types.MenuUserListResp, err er
 		Msg:  "",
 		Data: types.MenuUserData{
 			SysMenu: list,
+			BtnMenu: btnList,
 			Avatar:  "https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png",
 			Name:    userInfo.RealName,
 		},
