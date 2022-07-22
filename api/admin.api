@@ -294,13 +294,9 @@ type MenuListReq {
 	MenuName string `json:"menuName,optional"`
 }
 type MenuListResp {
-	Code int64        `json:"code"`
-	Msg  string       `json:"msg"`
-	Data MenuListData `json:"data"`
-}
-
-type MenuListData {
-	SysMenu []MenuList `json:"sysMenu"`
+	Code int64      `json:"code"`
+	Msg  string     `json:"msg"`
+	Data []MenuList `json:"data"`
 }
 
 type MenuList {

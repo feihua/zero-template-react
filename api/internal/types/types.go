@@ -302,13 +302,9 @@ type MenuListReq struct {
 }
 
 type MenuListResp struct {
-	Code int64        `json:"code"`
-	Msg  string       `json:"msg"`
-	Data MenuListData `json:"data"`
-}
-
-type MenuListData struct {
-	SysMenu []MenuList `json:"sysMenu"`
+	Code int64      `json:"code"`
+	Msg  string     `json:"msg"`
+	Data []MenuList `json:"data"`
 }
 
 type MenuList struct {
