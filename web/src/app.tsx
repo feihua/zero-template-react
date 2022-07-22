@@ -1,24 +1,21 @@
-import {Settings as LayoutSettings, MenuDataItem} from '@ant-design/pro-layout';
-import {SettingDrawer} from '@ant-design/pro-layout';
-import {PageLoading} from '@ant-design/pro-layout';
-import {RunTimeLayoutConfig} from 'umi';
-import {history} from 'umi';
+import {MenuDataItem, PageLoading, SettingDrawer, Settings as LayoutSettings} from '@ant-design/pro-layout';
+import {history, RunTimeLayoutConfig} from 'umi';
 import RightContent from '@/components/RightContent';
 import {currentUser as queryCurrentUser} from './services/ant-design-pro/api';
 import defaultSettings from '../config/defaultSettings';
 import {tree} from "@/utils/utils";
 import {
-  SmileOutlined,
-  HeartOutlined,
-  SettingOutlined,
+  AlertOutlined,
   DeleteOutlined,
+  DollarCircleOutlined,
   FrownOutlined,
   GiftOutlined,
-  DollarCircleOutlined,
-  AlertOutlined,
+  HeartOutlined,
+  SettingOutlined,
+  SmileOutlined,
 } from '@ant-design/icons';
 import {RequestConfig,} from "@@/plugin-request/request";
-import {RequestInterceptor, RequestOptionsInit} from 'umi-request';
+import {RequestInterceptor, ResponseInterceptor, RequestOptionsInit} from 'umi-request';
 import {notification} from "antd";
 
 const IconMap = {
@@ -180,8 +177,9 @@ const errorHandler = (error: any) => {
   throw error;
 };
 
-
+// 请求拦截
 const addToken: RequestInterceptor = (url: string, options: RequestOptionsInit) => {
+  console.log('请求地址: ' + url + ", 参数：" + JSON.stringify(options))
   options.headers = {
     Authorization: 'Bearer ' + localStorage.getItem('token'),
   };
@@ -191,7 +189,15 @@ const addToken: RequestInterceptor = (url: string, options: RequestOptionsInit) 
   };
 };
 
+// 响应拦截
+const res: ResponseInterceptor=async (response: Response) =>{
+  const res =await response.clone().json();
+  console.log('响应: ' + JSON.stringify(res));
+  return response
+}
+
 export const request: RequestConfig = {
   errorHandler,
   requestInterceptors: [addToken],
+  responseInterceptors: [res],
 };
