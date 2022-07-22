@@ -50,6 +50,7 @@ export async function getInitialState(): Promise<{
     try {
       const msg = await queryCurrentUser();
       localStorage.setItem('menuTree', JSON.stringify(msg.menuTree));
+      localStorage.setItem('btnUrl', JSON.stringify(msg.btnMenu));
       return msg;
     } catch (error) {
       history.push(loginPath);
