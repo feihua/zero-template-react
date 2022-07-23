@@ -15,7 +15,7 @@ import {
   SmileOutlined,
 } from '@ant-design/icons';
 import {RequestConfig,} from "@@/plugin-request/request";
-import {RequestInterceptor, ResponseInterceptor, RequestOptionsInit} from 'umi-request';
+import {RequestInterceptor, RequestOptionsInit, ResponseInterceptor} from 'umi-request';
 import {notification} from "antd";
 
 const IconMap = {
@@ -49,8 +49,8 @@ export async function getInitialState(): Promise<{
   const fetchUserInfo = async () => {
     try {
       const msg = await queryCurrentUser();
-      localStorage.setItem('menuTree', JSON.stringify(msg.menuTree));
-      localStorage.setItem('btnUrl', JSON.stringify(msg.btnMenu));
+      localStorage.setItem('menuTree', JSON.stringify(msg.data.sysMenu));
+      localStorage.setItem('btnUrl', JSON.stringify(msg.data.btnMenu));
       return msg;
     } catch (error) {
       history.push(loginPath);
@@ -71,6 +71,25 @@ export async function getInitialState(): Promise<{
     settings: defaultSettings,
   };
 }
+
+const loopMenuItem = (menus: any[]): MenuDataItem[] =>
+  menus.map(({icon, children, ...item}) => {
+    return {
+      ...item,
+      icon: icon && IconMap[icon as string],
+      children: children && loopMenuItem(children),
+    };
+  });
+
+
+const menuDataRender: any = () => {
+  const item = localStorage.getItem('menuTree') + '';
+
+  return loopMenuItem(tree(JSON.parse(item), 0, 'parentId'));
+
+  // return tree(JSON.parse(item), 0, "parent_id");
+};
+
 
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => {
@@ -115,25 +134,6 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
     ...initialState?.settings,
   };
 };
-
-const menuDataRender: any = () => {
-  let item = localStorage.getItem('menuTree') + '';
-
-  console.log(loopMenuItem(tree(JSON.parse(item), 0, 'parentId')));
-
-  return loopMenuItem(tree(JSON.parse(item), 0, 'parentId'));
-
-  // return tree(JSON.parse(item), 0, "parent_id");
-};
-
-const loopMenuItem = (menus: any[]): MenuDataItem[] =>
-  menus.map(({icon, children, ...item}) => {
-    return {
-      ...item,
-      icon: icon && IconMap[icon as string],
-      children: children && loopMenuItem(children),
-    };
-  });
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -180,7 +180,10 @@ const errorHandler = (error: any) => {
 
 // 请求拦截
 const addToken: RequestInterceptor = (url: string, options: RequestOptionsInit) => {
-  console.log('请求地址: ' + url + ", 参数：" + JSON.stringify(options))
+  const {method, data} = options
+  console.log("请求地址：" + method + ': ' + url)
+  console.log("请求参数：" + JSON.stringify(data))
+
   options.headers = {
     Authorization: 'Bearer ' + localStorage.getItem('token'),
   };
@@ -191,9 +194,8 @@ const addToken: RequestInterceptor = (url: string, options: RequestOptionsInit) 
 };
 
 // 响应拦截
-const res: ResponseInterceptor=async (response: Response) =>{
-  const res =await response.clone().json();
-  console.log('响应: ' + JSON.stringify(res));
+const res: ResponseInterceptor = async (response: Response) => {
+  console.log('响应数据: ' + JSON.stringify(await response.clone().json()));
   return response
 }
 

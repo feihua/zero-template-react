@@ -7,7 +7,7 @@ import ProDescriptions from '@ant-design/pro-descriptions';
 import UpdateMenuForm from './components/UpdateMenuForm';
 import { MenuListItem } from './data.d';
 import { queryMenu, updateRule, addMenu, removeMenu, removeMenuOne } from './service';
-import { tree } from '@/utils/utils';
+import {hasPm, tree} from '@/utils/utils';
 import CreateMenuForm from '@/pages/system/menu/components/CreateMenuForm';
 
 const { confirm } = Modal;
@@ -119,7 +119,7 @@ const TableList: React.FC<{}> = () => {
   const columns: ProColumns<MenuListItem>[] = [
     {
       title: '菜单名称',
-      dataIndex: 'name',
+      dataIndex: 'menuName',
       render: (dom, entity) => {
         return <a onClick={() => setRow(entity)}>{dom}</a>;
       },
@@ -132,16 +132,21 @@ const TableList: React.FC<{}> = () => {
     },
     {
       title: '路径',
-      dataIndex: 'url',
+      dataIndex: 'menuUrl',
+    },
+    {
+      title: '接口地址',
+      dataIndex: 'apiUrl',
+      hideInSearch: true,
     },
     {
       title: '类型',
-      dataIndex: 'type',
+      dataIndex: 'menuType',
       hideInSearch: true,
     },
     {
       title: '排序',
-      dataIndex: 'orderNum',
+      dataIndex: 'sort',
       hideInSearch: true,
     },
     {
@@ -150,33 +155,32 @@ const TableList: React.FC<{}> = () => {
       hideInSearch: true,
     },
     {
-      title: '权限',
-      dataIndex: 'perms',
-      hideInSearch: true,
-      hideInTable: true,
-    },
-    {
-      title: '创建人',
-      dataIndex: 'createBy',
+      title: '状态',
+      dataIndex: 'statusId',
       hideInSearch: true,
     },
-    {
-      title: '创建时间',
-      dataIndex: 'createTime',
-      valueType: 'dateTime',
-      hideInSearch: true,
-    },
-    {
-      title: '更新人',
-      dataIndex: 'lastUpdateBy',
-      hideInSearch: true,
-    },
-    {
-      title: '更新时间',
-      dataIndex: 'lastUpdateTime',
-      valueType: 'dateTime',
-      hideInSearch: true,
-    },
+    // {
+    //   title: '创建人',
+    //   dataIndex: 'createBy',
+    //   hideInSearch: true,
+    // },
+    // {
+    //   title: '创建时间',
+    //   dataIndex: 'createTime',
+    //   valueType: 'dateTime',
+    //   hideInSearch: true,
+    // },
+    // {
+    //   title: '更新人',
+    //   dataIndex: 'lastUpdateBy',
+    //   hideInSearch: true,
+    // },
+    // {
+    //   title: '更新时间',
+    //   dataIndex: 'lastUpdateTime',
+    //   valueType: 'dateTime',
+    //   hideInSearch: true,
+    // },
     {
       title: '操作',
       dataIndex: 'option',
@@ -186,6 +190,7 @@ const TableList: React.FC<{}> = () => {
           <Button
             type="primary"
             size="small"
+            disabled={!hasPm("/api/system/menu/view")}
             onClick={() => {
               handleUpdateModalVisible(true);
               setStepFormValues(record);
@@ -197,6 +202,7 @@ const TableList: React.FC<{}> = () => {
           <Button
             type="primary"
             size="small"
+            disabled={!hasPm("/api/system/menu/save")}
             onClick={() => {
               handleModalVisible(true);
               setStepFormValues(record);
@@ -209,6 +215,7 @@ const TableList: React.FC<{}> = () => {
             type="primary"
             danger
             size="small"
+            disabled={!hasPm("/api/system/menu/delete")}
             onClick={() => {
               showDeleteConfirm(record.id);
             }}
@@ -230,7 +237,7 @@ const TableList: React.FC<{}> = () => {
           labelWidth: 120,
         }}
         toolBarRender={() => [
-          <Button type="primary" onClick={() => handleModalVisible(true)}>
+          <Button type="primary" disabled={!hasPm("/api/system/menu/save")} onClick={() => handleModalVisible(true)}>
             <PlusOutlined /> 新建菜单
           </Button>,
         ]}

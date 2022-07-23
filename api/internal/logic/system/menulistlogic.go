@@ -52,8 +52,6 @@ func (l *MenuListLogic) MenuList(req types.MenuListReq) (resp *types.MenuListRes
 	return &types.MenuListResp{
 		Code: 200,
 		Msg:  "",
-		Data: types.MenuListData{
-			SysMenu: list,
-		},
+		Data: list,
 	}, nil
 }

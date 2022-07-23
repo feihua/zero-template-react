@@ -13,6 +13,7 @@ import {
   addUser,
   removeUser,
 } from './service';
+import {hasPm} from "@/utils/utils";
 
 const { confirm } = Modal;
 
@@ -109,7 +110,7 @@ const TableList: React.FC<{}> = () => {
       icon: <ExclamationCircleOutlined />,
       content: '删除的记录不能恢复,请确认!',
       onOk() {
-        handleRemoveOne(id).then((r) => {
+        handleRemoveOne(id).then(() => {
           actionRef.current?.reloadAndRest?.();
         });
       },
@@ -124,45 +125,32 @@ const TableList: React.FC<{}> = () => {
       hideInSearch: true,
     },
     {
-      title: '用户名',
-      dataIndex: 'name',
+      title: '手机号',
+      dataIndex: 'mobile',
       render: (dom, entity) => {
         return <a onClick={() => setRow(entity)}>{dom}</a>;
       },
     },
     {
       title: '昵称',
-      dataIndex: 'nickName',
+      dataIndex: 'realName',
     },
     {
-      title: '手机号',
-      dataIndex: 'mobile',
-    },
-    {
-      title: '邮箱',
-      dataIndex: 'email',
-    },
-    {
-      title: '部门',
-      dataIndex: 'deptName',
-    },
-    {
-      title: '职位',
-      dataIndex: 'jobName',
-    },
-    {
-      title: '角色',
-      dataIndex: 'roleName',
+      title: '排序',
+      dataIndex: 'sort',
     },
     {
       title: '状态',
-      dataIndex: 'status',
+      dataIndex: 'statusId',
       valueEnum: {
         0: { text: '禁用', status: 'Error' },
         1: { text: '正常', status: 'Success' },
       },
     },
-
+    {
+      title: '备注',
+      dataIndex: 'remark',
+    },
     {
       title: '创建人',
       dataIndex: 'createBy',
@@ -193,11 +181,13 @@ const TableList: React.FC<{}> = () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
+      width: 400,
       render: (_, record) => (
         <>
           <Button
             type="primary"
             size="small"
+            disabled={!hasPm("/api/system/user/view")}
             onClick={() => {
               handleUpdateModalVisible(true);
               setStepFormValues(record);
@@ -208,8 +198,33 @@ const TableList: React.FC<{}> = () => {
           <Divider type="vertical" />
           <Button
             type="primary"
+            size="small"
+            disabled={!hasPm("/api/system/role/userRoleSave")}
+            onClick={() => {
+              handleUpdateModalVisible(true);
+              setStepFormValues(record);
+            }}
+          >
+            设置角色
+          </Button>
+          <Divider type="vertical" />
+          <Button
+            type="primary"
+            size="small"
+            disabled={!hasPm("/api/system/user/password")}
+            onClick={() => {
+              handleUpdateModalVisible(true);
+              setStepFormValues(record);
+            }}
+          >
+            密码修改
+          </Button>
+          <Divider type="vertical" />
+          <Button
+            type="primary"
             danger
             size="small"
+            disabled={!hasPm("/api/system/user/delete")}
             onClick={() => {
               showDeleteConfirm(record.id);
             }}
@@ -231,7 +246,7 @@ const TableList: React.FC<{}> = () => {
           labelWidth: 120,
         }}
         toolBarRender={() => [
-          <Button type="primary" onClick={() => handleModalVisible(true)}>
+          <Button type="primary" disabled={!hasPm("/api/system/user/save")} onClick={() => handleModalVisible(true)}>
             <PlusOutlined /> 新建用户
           </Button>,
         ]}

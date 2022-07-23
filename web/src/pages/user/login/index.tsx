@@ -56,7 +56,7 @@ const Login: React.FC = () => {
       // 登录
       const msg = await login({ ...values, type });
       if (msg.status === 'ok') {
-        localStorage.setItem("token", msg.token);
+        localStorage.setItem("token", msg.data.token);
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
           defaultMessage: '登录成功！',
@@ -70,7 +70,7 @@ const Login: React.FC = () => {
         history.push(redirect || '/');
         return;
       }
-      console.log(msg);
+
       // 如果失败去设置用户错误信息
       setUserLoginState(msg);
     } catch (error) {
@@ -138,7 +138,7 @@ const Login: React.FC = () => {
           {type === 'account' && (
             <>
               <ProFormText
-                name="userName"
+                name="mobile"
                 fieldProps={{
                   size: 'large',
                   prefix: <UserOutlined className={styles.prefixIcon} />,

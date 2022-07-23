@@ -2,7 +2,7 @@ import { request } from 'umi';
 import { RoleListParams, RoleListItem } from './data.d';
 
 export async function queryRole(params?: RoleListParams) {
-  return request('/api/sys/role/list', {
+  return request('/api/system/role/list', {
     method: 'POST',
     data: {
       ...params,

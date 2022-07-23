@@ -21,14 +21,6 @@ export function tree(data: any, pid = 0, key = 'pid') {
   return result;
 }
 
-// 判断有无按钮权限（组件形式）
-export const HasPm = (props: { apiUrl: string; children: any }) => {
-  const {apiUrl, children} = props;
-
-  return hasPm(apiUrl) ? children : null
-};
-
-
 // 只返回是否有权限（方法形式）
 export const hasPm = (apiUrl: string) => {
 
@@ -37,3 +29,13 @@ export const hasPm = (apiUrl: string) => {
   });
 
 };
+
+// 判断有无按钮权限（组件形式）
+export const HasPm = (props: { apiUrl: string; children: any }) => {
+  const {apiUrl, children} = props;
+
+  return hasPm(apiUrl) ? children : null
+};
+
+
+

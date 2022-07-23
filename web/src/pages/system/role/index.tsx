@@ -16,6 +16,7 @@ import {
   removeRoleOne,
   updateRoleMenu,
 } from './service';
+import {hasPm} from "@/utils/utils";
 
 const { confirm } = Modal;
 
@@ -210,6 +211,7 @@ const TableList: React.FC<{}> = () => {
           <Button
             type="primary"
             size="small"
+            disabled={!hasPm("/api/system/role/view")}
             onClick={() => {
               handleUpdateModalVisible(true);
               setStepFormValues(record);
@@ -221,6 +223,7 @@ const TableList: React.FC<{}> = () => {
           <Button
             type="primary"
             size="small"
+            disabled={!hasPm("/api/system/menu/roleMenuSave")}
             onClick={() => {
               handleUpdateMenuModalVisible(true);
               setMenuStepFormValues(record);
@@ -233,6 +236,7 @@ const TableList: React.FC<{}> = () => {
             type="primary"
             danger
             size="small"
+            disabled={!hasPm("/api/system/role/delete")}
             onClick={() => {
               showDeleteConfirm(record.id);
             }}
@@ -254,7 +258,7 @@ const TableList: React.FC<{}> = () => {
           labelWidth: 120,
         }}
         toolBarRender={() => [
-          <Button key={'new'} type="primary" onClick={() => handleModalVisible(true)}>
+          <Button key={'new'} type="primary" disabled={!hasPm("/api/system/role/save")} onClick={() => handleModalVisible(true)}>
             <PlusOutlined /> 新建角色
           </Button>,
         ]}
