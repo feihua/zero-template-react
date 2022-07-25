@@ -46,6 +46,7 @@ func (l *MenuListLogic) MenuList(req types.MenuListReq) (resp *types.MenuListRes
 			ApiUrl:   menu.ApiUrl,
 			Remark:   menu.Remark.String,
 			MenuType: menu.MenuType,
+			Icon:     menu.MenuIcon.String,
 		})
 	}
 

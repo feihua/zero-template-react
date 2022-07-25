@@ -1,8 +1,14 @@
 export interface MenuListItem {
   id: number;
-  orderNum: number;
-  type: number;
-
+  menuName: string;
+  parentId: number;
+  menuUrl: string;
+  menuType: number;
+  icon: string;
+  sort: number;
+  remark: string;
+  statusId: number;
+  apiUrl: string;
 }
 
 export interface MenuListPagination {

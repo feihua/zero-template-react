@@ -39,7 +39,10 @@ func (l *MenuSaveLogic) MenuSave(req types.MenuSaveReq) (resp *types.MenuSaveRes
 		MenuName:    req.MenuName,
 		MenuUrl:     req.MenuUrl,
 		ApiUrl:      req.MenuUrl,
-		MenuIcon:    sql.NullString{},
+		MenuIcon: sql.NullString{
+			String: req.Icon,
+			Valid:  true,
+		},
 		Remark: sql.NullString{
 			String: req.Remark,
 			Valid:  true,

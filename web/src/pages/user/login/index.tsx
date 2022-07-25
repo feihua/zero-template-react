@@ -31,9 +31,9 @@ const LoginMessage: React.FC<{
 
 const Login: React.FC = () => {
   const [userLoginState, setUserLoginState] = useState<API.LoginResult>({
+    data: { token: '' },
     currentAuthority: "",
     status: "",
-    token: "",
     type: ""
   });
   const [type, setType] = useState<string>('account');

@@ -37,7 +37,10 @@ func (l *MenuUpdateLogic) MenuUpdate(req types.MenuUpdateReq) (resp *types.MenuU
 		MenuName:    req.MenuName,
 		MenuUrl:     req.MenuUrl,
 		ApiUrl:      req.ApiUrl,
-		MenuIcon:    sql.NullString{},
+		MenuIcon: sql.NullString{
+			String: req.Icon,
+			Valid:  true,
+		},
 		Remark: sql.NullString{
 			String: req.Remark,
 			Valid:  true,

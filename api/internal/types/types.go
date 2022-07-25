@@ -315,6 +315,7 @@ type MenuList struct {
 	MenuName string `json:"menuName"`
 	Label    string `json:"label"`
 	MenuURL  string `json:"menuUrl"`
+	Icon     string `json:"icon"`
 	ApiUrl   string `json:"apiUrl"`
 	Remark   string `json:"remark"`
 	MenuType int64  `json:"menuType"`
@@ -347,9 +348,10 @@ type MenuSaveReq struct {
 	MenuName string `json:"menuName"`
 	MenuType int64  `json:"menuType"`
 	MenuUrl  string `json:"menuUrl"`
-	ParentId int64  `json:"parentId"`
+	ParentId int64  `json:"parentId,default=0"`
 	Remark   string `json:"remark"`
 	Sort     int64  `json:"sort"`
+	Icon     string `json:"icon"`
 }
 
 type MenuSaveResp struct {
@@ -369,8 +371,8 @@ type MenuUpdateReq struct {
 	Sort     int64  `json:"sort"`
 	ParentId int64  `json:"parentId"`
 	MenuName string `json:"menuName"`
-	Label    string `json:"label"`
 	MenuUrl  string `json:"menuUrl"`
+	Icon     string `json:"icon"`
 	ApiUrl   string `json:"apiUrl"`
 	Remark   string `json:"remark"`
 	MenuType int64  `json:"menuType"`

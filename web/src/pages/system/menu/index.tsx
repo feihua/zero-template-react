@@ -6,7 +6,7 @@ import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import UpdateMenuForm from './components/UpdateMenuForm';
 import { MenuListItem } from './data.d';
-import { queryMenu, updateRule, addMenu, removeMenu, removeMenuOne } from './service';
+import { queryMenuList, updateMenu, addMenu, removeMenu, removeMenuOne } from './service';
 import {hasPm, tree} from '@/utils/utils';
 import CreateMenuForm from '@/pages/system/menu/components/CreateMenuForm';
 
@@ -19,8 +19,8 @@ const { confirm } = Modal;
 const handleAdd = async (fields: MenuListItem) => {
   const hide = message.loading('正在添加');
   try {
-    fields.orderNum = Number(fields.orderNum);
-    fields.type = Number(fields.type);
+    fields.menuType = Number(fields.menuType);
+    fields.sort = Number(fields.sort);
     await addMenu({ ...fields });
     hide();
     message.success('添加成功');
@@ -39,9 +39,10 @@ const handleAdd = async (fields: MenuListItem) => {
 const handleUpdate = async (fields: Partial<MenuListItem>) => {
   const hide = message.loading('正在更新');
   try {
-    fields.orderNum = Number(fields.orderNum);
-    fields.type = Number(fields.type);
-    await updateRule(fields as MenuListItem);
+    fields.menuType = Number(fields.menuType);
+    fields.sort = Number(fields.sort);
+    fields.statusId = Number(fields.statusId);
+    await updateMenu(fields as MenuListItem);
     hide();
 
     message.success('更新成功');
@@ -133,6 +134,7 @@ const TableList: React.FC<{}> = () => {
     {
       title: '路径',
       dataIndex: 'menuUrl',
+      hideInSearch: true,
     },
     {
       title: '接口地址',
@@ -241,7 +243,7 @@ const TableList: React.FC<{}> = () => {
             <PlusOutlined /> 新建菜单
           </Button>,
         ]}
-        request={(params, sorter, filter) => queryMenu({ ...params, sorter, filter })}
+        request={(params, sorter, filter) => queryMenuList({ ...params, sorter, filter })}
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => setSelectedRows(selectedRows),

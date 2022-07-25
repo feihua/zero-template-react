@@ -307,9 +307,9 @@ type MenuList {
 	MenuName string `json:"menuName"`
 	Label    string `json:"label"`
 	MenuURL  string `json:"menuUrl"`
-	//	MenuIcon   interface{} `json:"menuIcon"`
-	ApiUrl string `json:"apiUrl"`
-	Remark string `json:"remark"`
+	Icon     string `json:"icon"`
+	ApiUrl   string `json:"apiUrl"`
+	Remark   string `json:"remark"`
 	//	HiddenType interface{} `json:"hiddenType"`
 	MenuType int64 `json:"menuType"`
 }
@@ -340,9 +340,11 @@ type MenuSaveReq {
 	MenuName string `json:"menuName"`
 	MenuType int64  `json:"menuType"`
 	MenuUrl  string `json:"menuUrl"`
-	ParentId int64  `json:"parentId"`
+	StatusId int64  `json:"statusId,default=1"`
+	ParentId int64  `json:"parentId,default=0"`
 	Remark   string `json:"remark"`
 	Sort     int64  `json:"sort"`
+	Icon     string `json:"icon"`
 }
 type MenuSaveResp {
 	Timestamp string `json:"timestamp"`
@@ -361,13 +363,11 @@ type MenuUpdateReq {
 	Sort     int64  `json:"sort"`
 	ParentId int64  `json:"parentId"`
 	MenuName string `json:"menuName"`
-	Label    string `json:"label"`
 	MenuUrl  string `json:"menuUrl"`
-	//	MenuIcon   interface{} `json:"menuIcon"`
-	ApiUrl string `json:"apiUrl"`
-	Remark string `json:"remark"`
-	//	HiddenType interface{} `json:"hiddenType"`
-	MenuType int64 `json:"menuType"`
+	Icon     string `json:"icon"`
+	ApiUrl   string `json:"apiUrl"`
+	Remark   string `json:"remark"`
+	MenuType int64  `json:"menuType"`
 }
 type MenuUpdateResp {
 	Timestamp string `json:"timestamp"`

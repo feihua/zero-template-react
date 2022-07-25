@@ -3,7 +3,7 @@ import { Modal, Tree } from 'antd';
 import { FormValueType } from '@/pages/system/user/components/UpdateUserForm';
 import { UserListItem } from '@/pages/system/user/data';
 
-import { queryMenu } from '../../menu/service';
+import { queryMenuList } from '../../menu/service';
 import { tree as toTree } from '@/utils/utils';
 
 interface CreateFormProps {
@@ -76,7 +76,7 @@ const MenuForm: React.FC<CreateFormProps> = (props) => {
   // };
 
   useEffect(() => {
-    queryMenu().then((res) => {
+    queryMenuList().then((res) => {
       let tr = toTree(res.data, 0, 'parentId');
       // @ts-ignore
       setTreeData(tr);
