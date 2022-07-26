@@ -1,15 +1,15 @@
-import { PlusOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import { Button, Divider, message, Drawer, Modal } from 'antd';
-import React, { useState, useRef } from 'react';
-import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
-import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
+import {PlusOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
+import {Button, Divider, message, Drawer, Modal} from 'antd';
+import React, {useState, useRef} from 'react';
+import {PageContainer, FooterToolbar} from '@ant-design/pro-layout';
+import ProTable, {ProColumns, ActionType} from '@ant-design/pro-table';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import CreateUserForm from './components/CreateUserForm';
 import UpdateUserForm from './components/UpdateUserForm';
 import UpdateUserPasswordForm from './components/UpdateUserPasswordForm';
-import UpdateUserRoleForm from '@/pages/system/user/components/UpdateUserRoleForm';
+import UpdateUserRoleForm from './components/UpdateUserRoleForm';
 
-import { UserListItem } from './data.d';
+import {UserListItem} from './data.d';
 import {
   queryUserList,
   updateUser,
@@ -18,7 +18,7 @@ import {
 } from './service';
 import {hasPm} from "@/utils/utils";
 
-const { confirm } = Modal;
+const {confirm} = Modal;
 
 /**
  * 添加节点
@@ -27,8 +27,8 @@ const { confirm } = Modal;
 const handleAdd = async (fields: UserListItem) => {
   const hide = message.loading('正在添加');
   try {
-    fields.sort=Number(fields.sort)
-    await addUser({ ...fields });
+    fields.sort = Number(fields.sort)
+    await addUser({...fields});
     hide();
     message.success('添加成功');
     return true;
@@ -46,7 +46,7 @@ const handleAdd = async (fields: UserListItem) => {
 const handleUpdate = async (fields: Partial<UserListItem>) => {
   const hide = message.loading('正在更新');
   try {
-    fields.sort=Number(fields.sort)
+    fields.sort = Number(fields.sort)
     await updateUser(fields as UserListItem);
     hide();
     message.success('更新成功');
@@ -66,7 +66,7 @@ const handleRemoveOne = async (id: number) => {
   const hide = message.loading('正在删除');
   try {
     await removeUser({
-      ids:[id],
+      ids: [id],
     });
     hide();
     message.success('删除成功，即将刷新');
@@ -112,14 +112,15 @@ const TableList: React.FC<{}> = () => {
   const showDeleteConfirm = (id: number) => {
     confirm({
       title: '是否删除记录?',
-      icon: <ExclamationCircleOutlined />,
+      icon: <ExclamationCircleOutlined/>,
       content: '删除的记录不能恢复,请确认!',
       onOk() {
         handleRemoveOne(id).then(() => {
           actionRef.current?.reloadAndRest?.();
         });
       },
-      onCancel() {},
+      onCancel() {
+      },
     });
   };
 
@@ -139,36 +140,37 @@ const TableList: React.FC<{}> = () => {
     {
       title: '昵称',
       dataIndex: 'realName',
+      hideInSearch: true,
     },
     {
       title: '排序',
       dataIndex: 'sort',
+      hideInSearch: true,
     },
     {
       title: '状态',
       dataIndex: 'statusId',
       valueEnum: {
-        0: { text: '禁用', status: 'Error' },
-        1: { text: '正常', status: 'Success' },
+        0: {text: '禁用', status: 'Error'},
+        1: {text: '正常', status: 'Success'},
       },
     },
     {
       title: '备注',
       dataIndex: 'remark',
+      hideInSearch: true,
     },
     {
       title: '创建时间',
       dataIndex: 'createTime',
       valueType: 'dateTime',
       hideInSearch: true,
-      hideInTable: true,
     },
     {
       title: '更新时间',
-      dataIndex: 'lastUpdateTime',
+      dataIndex: 'updateTime',
       valueType: 'dateTime',
       hideInSearch: true,
-      hideInTable: true,
     },
     {
       title: '操作',
@@ -188,7 +190,7 @@ const TableList: React.FC<{}> = () => {
           >
             编辑
           </Button>
-          <Divider type="vertical" />
+          <Divider type="vertical"/>
           <Button
             type="primary"
             size="small"
@@ -200,7 +202,7 @@ const TableList: React.FC<{}> = () => {
           >
             设置角色
           </Button>
-          <Divider type="vertical" />
+          <Divider type="vertical"/>
           <Button
             type="primary"
             size="small"
@@ -212,7 +214,7 @@ const TableList: React.FC<{}> = () => {
           >
             密码修改
           </Button>
-          <Divider type="vertical" />
+          <Divider type="vertical"/>
           <Button
             type="primary"
             danger
@@ -240,21 +242,21 @@ const TableList: React.FC<{}> = () => {
         }}
         toolBarRender={() => [
           <Button type="primary" disabled={!hasPm("/api/system/user/save")} onClick={() => handleModalVisible(true)}>
-            <PlusOutlined /> 新建用户
+            <PlusOutlined/> 新建用户
           </Button>,
         ]}
-        request={(params, sorter, filter) => queryUserList({ ...params, sorter, filter })}
+        request={(params, sorter, filter) => queryUserList({...params, sorter, filter})}
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => setSelectedRows(selectedRows),
         }}
-        pagination={{pageSize:10}}
+        pagination={{pageSize: 10}}
       />
       {selectedRowsState?.length > 0 && (
         <FooterToolbar
           extra={
             <div>
-              已选择 <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a> 项&nbsp;&nbsp;
+              已选择 <a style={{fontWeight: 600}}>{selectedRowsState.length}</a> 项&nbsp;&nbsp;
             </div>
           }
         >
@@ -289,88 +291,88 @@ const TableList: React.FC<{}> = () => {
         createModalVisible={createModalVisible}
       />
 
-    <UpdateUserForm
-      key={'UpdateUserForm'}
-      onSubmit={async (value) => {
-        const success = await handleUpdate(value);
-        if (success) {
+      <UpdateUserForm
+        key={'UpdateUserForm'}
+        onSubmit={async (value) => {
+          const success = await handleUpdate(value);
+          if (success) {
+            handleUpdateModalVisible(false);
+            setStepFormValues({});
+            if (actionRef.current) {
+              actionRef.current.reload();
+            }
+          }
+        }}
+        onCancel={() => {
           handleUpdateModalVisible(false);
           setStepFormValues({});
-          if (actionRef.current) {
-            actionRef.current.reload();
-          }
-        }
-      }}
-      onCancel={() => {
-        handleUpdateModalVisible(false);
-        setStepFormValues({});
-      }}
-      updateModalVisible={updateModalVisible}
-      currentData={stepFormValues}
-    />
+        }}
+        updateModalVisible={updateModalVisible}
+        currentData={stepFormValues}
+      />
 
-    <UpdateUserRoleForm
-      key={'UpdateUserRoleForm'}
-      onSubmit={async (value) => {
-        const success = await handleUpdate(value);
-        if (success) {
+      <UpdateUserRoleForm
+        key={'UpdateUserRoleForm'}
+        onSubmit={async (value) => {
+          const success = await handleUpdate(value);
+          if (success) {
+            handleRoleModalVisible(false);
+            setStepFormValues({});
+            if (actionRef.current) {
+              actionRef.current.reload();
+            }
+          }
+        }}
+        onCancel={() => {
           handleRoleModalVisible(false);
           setStepFormValues({});
-          if (actionRef.current) {
-            actionRef.current.reload();
-          }
-        }
-      }}
-      onCancel={() => {
-        handleRoleModalVisible(false);
-        setStepFormValues({});
-      }}
-      updateRoleModalVisible={updateRoleModalVisible}
-      currentData={stepFormValues}
-    />
+        }}
+        updateRoleModalVisible={updateRoleModalVisible}
+        currentData={stepFormValues}
+      />
 
-    <UpdateUserPasswordForm
-      key={'UpdateUserPasswordForm'}
-      onSubmit={async (value) => {
-        const success = await handleUpdate(value);
-        if (success) {
+      <UpdateUserPasswordForm
+        key={'UpdateUserPasswordForm'}
+        onSubmit={async (value) => {
+          const success = await handleUpdate(value);
+          if (success) {
+            handlePasswordModalVisible(false);
+            setStepFormValues({});
+            if (actionRef.current) {
+              actionRef.current.reload();
+            }
+          }
+        }}
+        onCancel={() => {
           handlePasswordModalVisible(false);
           setStepFormValues({});
-          if (actionRef.current) {
-            actionRef.current.reload();
-          }
-        }
-      }}
-      onCancel={() => {
-        handlePasswordModalVisible(false);
-        setStepFormValues({});
-      }}
-      updatePasswordModalVisible={updatePasswordModalVisible}
-      currentData={stepFormValues}
-    />
+        }}
+        updatePasswordModalVisible={updatePasswordModalVisible}
+        currentData={stepFormValues}
+      />
 
-    <Drawer
-      width={600}
-      visible={!!row}
-      onClose={() => {
-        setRow(undefined);
-      }}
-      closable={false}
-    >
-      {row?.id && (
-        <ProDescriptions<UserListItem>
-          column={2}
-          title={row?.id}
-          request={async () => ({
-            data: row || {},
-          })}
-          params={{
-            id: row?.id,
-          }}
-          columns={columns}
-        />
-      )}
-    </Drawer>
+      <Drawer
+        width={600}
+        visible={!!row}
+        onClose={() => {
+          setRow(undefined);
+        }}
+        closable={false}
+      >
+        {row?.id && (
+          <ProDescriptions<UserListItem>
+            column={2}
+            title={row?.id}
+            request={async () => ({
+              data: row || {},
+            })}
+            params={{
+              id: row?.id,
+            }}
+            columns={columns}
+          />
+        )}
+      </Drawer>
     </PageContainer>
   );
 };

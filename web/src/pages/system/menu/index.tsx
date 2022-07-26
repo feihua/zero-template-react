@@ -1,5 +1,5 @@
 import { PlusOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import { Button, Divider, message, Drawer, Modal } from 'antd';
+import {Button, Divider, message, Drawer, Modal, Input} from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
@@ -161,28 +161,45 @@ const TableList: React.FC<{}> = () => {
       dataIndex: 'statusId',
       hideInSearch: true,
     },
-    // {
-    //   title: '创建人',
-    //   dataIndex: 'createBy',
-    //   hideInSearch: true,
-    // },
-    // {
-    //   title: '创建时间',
-    //   dataIndex: 'createTime',
-    //   valueType: 'dateTime',
-    //   hideInSearch: true,
-    // },
-    // {
-    //   title: '更新人',
-    //   dataIndex: 'lastUpdateBy',
-    //   hideInSearch: true,
-    // },
-    // {
-    //   title: '更新时间',
-    //   dataIndex: 'lastUpdateTime',
-    //   valueType: 'dateTime',
-    //   hideInSearch: true,
-    // },
+    {
+      title: '备注',
+      dataIndex: 'remark',
+      hideInSearch: true,
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'createTime',
+      sorter: true,
+      valueType: 'dateTime',
+      hideInSearch: true,
+      renderFormItem: (item, { defaultRender, ...rest }, form) => {
+        const status = form.getFieldValue('status');
+        if (`${status}` === '0') {
+          return false;
+        }
+        if (`${status}` === '3') {
+          return <Input {...rest} placeholder="请输入异常原因！" />;
+        }
+        return defaultRender(item);
+      },
+    },
+    {
+      title: '更新时间',
+      dataIndex: 'updateTime',
+      sorter: true,
+      valueType: 'dateTime',
+      hideInSearch: true,
+      renderFormItem: (item, { defaultRender, ...rest }, form) => {
+        const status = form.getFieldValue('status');
+        if (`${status}` === '0') {
+          return false;
+        }
+        if (`${status}` === '3') {
+          return <Input {...rest} placeholder="请输入异常原因！" />;
+        }
+        return defaultRender(item);
+      },
+    },
     {
       title: '操作',
       dataIndex: 'option',
@@ -235,9 +252,7 @@ const TableList: React.FC<{}> = () => {
         headerTitle="菜单列表"
         actionRef={actionRef}
         rowKey="id"
-        search={{
-          labelWidth: 120,
-        }}
+        search={false}
         toolBarRender={() => [
           <Button type="primary" disabled={!hasPm("/api/system/menu/save")} onClick={() => handleModalVisible(true)}>
             <PlusOutlined /> 新建菜单

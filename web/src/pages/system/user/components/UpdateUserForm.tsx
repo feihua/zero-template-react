@@ -81,12 +81,6 @@ const UpdateUserForm: React.FC<UpdateFormProps> = (props) => {
           <Input id="update-sort" placeholder={'请输入排序'}/>
         </FormItem>
         <FormItem
-          name="remark"
-          label="备注"
-        >
-          <Input id="update-remark" placeholder={'请输入备注'}/>
-        </FormItem>
-        <FormItem
           name="statusId"
           label="状态"
         >
@@ -95,6 +89,13 @@ const UpdateUserForm: React.FC<UpdateFormProps> = (props) => {
             <Option value={1}>启用</Option>
           </Select>
         </FormItem>
+        <FormItem
+          name="remark"
+          label="备注"
+        >
+          <Input.TextArea id="update-remark" placeholder={'请输入备注'} rows={4}/>
+        </FormItem>
+
       </>
     );
   };

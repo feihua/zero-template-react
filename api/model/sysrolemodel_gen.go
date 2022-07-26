@@ -6,6 +6,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 
@@ -32,8 +33,8 @@ type (
 		FindOne(ctx context.Context, id int64) (*SysRole, error)
 		FindOneByRoleName(ctx context.Context, roleName string) (*SysRole, error)
 		FindAllByUserId(ctx context.Context, userId int64) (*[]SysRole, error)
-		FindAll(ctx context.Context, Current int64, PageSize int64, roleName string) (*[]SysRole, error)
-		Count(ctx context.Context) (int64, error)
+		FindAll(ctx context.Context, Current int64, PageSize int64, roleName string, statusId string) (*[]SysRole, error)
+		Count(ctx context.Context, roleName string, statusId string) (int64, error)
 		Update(ctx context.Context, data *SysRole) error
 		UpdateRoleStatus(ctx context.Context, id int64, statusId int64) error
 		Delete(ctx context.Context, id int64) error
@@ -129,13 +130,20 @@ func (m *defaultSysRoleModel) FindAllByUserId(ctx context.Context, userId int64)
 	}
 }
 
-func (m *defaultSysRoleModel) FindAll(ctx context.Context, Current int64, PageSize int64, roleName string) (*[]SysRole, error) {
+func (m *defaultSysRoleModel) FindAll(ctx context.Context, Current int64, PageSize int64, roleName string, statusId string) (*[]SysRole, error) {
+
+	roleName = strings.TrimSpace(roleName)
+	status, _ := strconv.Atoi(statusId)
 
 	var query string
-	if len(strings.TrimSpace(roleName)) == 0 {
+	if len(roleName) == 0 && len(statusId) == 0 {
 		query = fmt.Sprintf("select %s from %s limit ?,?", sysRoleRows, m.table)
-	}else {
+	} else if len(roleName) != 0 && len(statusId) == 0 {
 		query = fmt.Sprintf("select %s from %s where role_name like '%%%s%%' limit ?,?", sysRoleRows, m.table, roleName)
+	} else if len(roleName) == 0 && len(statusId) != 0 {
+		query = fmt.Sprintf("select %s from %s where status_id = %d limit ?,?", sysRoleRows, m.table, status)
+	} else {
+		query = fmt.Sprintf("select %s from %s where role_name like '%%%s%%' and status_id = %d limit ?,?", sysRoleRows, m.table, roleName, status)
 	}
 
 	var resp []SysRole
@@ -150,8 +158,21 @@ func (m *defaultSysRoleModel) FindAll(ctx context.Context, Current int64, PageSi
 	}
 }
 
-func (m *defaultSysRoleModel) Count(ctx context.Context) (int64, error) {
-	query := fmt.Sprintf("select count(*) as count from %s", m.table)
+func (m *defaultSysRoleModel) Count(ctx context.Context, roleName string, statusId string) (int64, error) {
+
+	roleName = strings.TrimSpace(roleName)
+	status, _ := strconv.Atoi(statusId)
+
+	var query string
+	if len(roleName) == 0 && len(statusId) == 0 {
+		query = fmt.Sprintf("select count(*) as count from %s", m.table)
+	} else if len(roleName) != 0 && len(statusId) == 0 {
+		query = fmt.Sprintf("select count(*) as count from %s where role_name like '%%%s%%'", m.table, roleName)
+	} else if len(roleName) == 0 && len(statusId) != 0 {
+		query = fmt.Sprintf("select count(*) as count from %s where status_id = %d", m.table, status)
+	} else {
+		query = fmt.Sprintf("select count(*) as count from %s where role_name like '%%%s%%' and status_id = %d", m.table, roleName, status)
+	}
 
 	var count int64
 	err := m.QueryRowNoCacheCtx(ctx, &count, query)

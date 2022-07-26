@@ -28,7 +28,7 @@ func (l *RoleUserListLogic) RoleUserList(req types.RoleUserListReq) (resp *types
 
 	var roleList *[]model.SysRole
 	if req.UserId == 1 {
-		roleList, _ = l.svcCtx.RoleModel.FindAll(l.ctx, 1, 1000, "")
+		roleList, _ = l.svcCtx.RoleModel.FindAll(l.ctx, 1, 1000, "", "")
 	} else {
 		roleList, _ = l.svcCtx.RoleModel.FindAllByUserId(l.ctx, req.UserId)
 	}

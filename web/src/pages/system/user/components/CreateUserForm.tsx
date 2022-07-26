@@ -67,7 +67,7 @@ const CreateUserForm: React.FC<CreateFormProps> = (props) => {
           name="remark"
           label="备注"
         >
-          <Input id="update-remark" placeholder={'请输入备注'}/>
+          <Input.TextArea id="add-remark" placeholder={'请输入备注'} rows={4}/>
         </FormItem>
 
       </>

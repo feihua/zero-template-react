@@ -23,6 +23,7 @@ type UserListReq struct {
 	Current  int64  `json:"current,default=1"`
 	PageSize int64  `json:"pageSize,default=20"`
 	Mobile   string `json:"mobile,optional"`
+	StatusID string `json:"statusId,optional"`
 }
 
 type UserListResp struct {
@@ -36,13 +37,15 @@ type UserListResp struct {
 }
 
 type UserList struct {
-	Id       int64  `json:"id"`
-	StatusID int64  `json:"statusId"`
-	Sort     int64  `json:"sort"`
-	UserNo   int64  `json:"userNo"`
-	Mobile   string `json:"mobile"`
-	RealName string `json:"realName"`
-	Remark   string `json:"remark"`
+	Id         int64  `json:"id"`
+	StatusID   int64  `json:"statusId"`
+	Sort       int64  `json:"sort"`
+	UserNo     int64  `json:"userNo"`
+	Mobile     string `json:"mobile"`
+	RealName   string `json:"realName"`
+	Remark     string `json:"remark"`
+	CreateTime string `json:"createTime"`
+	UpdateTime string `json:"updateTime"`
 }
 
 type UserViewReq struct {
@@ -153,7 +156,7 @@ type UserUpdatePasswordResp struct {
 type RoleListReq struct {
 	Current  int64  `json:"current,default=1"`
 	PageSize int64  `json:"pageSize,default=20"`
-	StatusID int64  `json:"statusId,optional"`
+	StatusID string `json:"statusId,optional"`
 	RoleName string `json:"roleName,optional"`
 }
 
@@ -168,11 +171,13 @@ type RoleListResp struct {
 }
 
 type RoleList struct {
-	Id       int64  `json:"id"`
-	StatusID int64  `json:"statusId"`
-	Sort     int64  `json:"sort"`
-	RoleName string `json:"roleName"`
-	Remark   string `json:"remark"`
+	Id         int64  `json:"id"`
+	StatusID   int64  `json:"statusId"`
+	Sort       int64  `json:"sort"`
+	RoleName   string `json:"roleName"`
+	Remark     string `json:"remark"`
+	CreateTime string `json:"createTime"`
+	UpdateTime string `json:"updateTime"`
 }
 
 type RoleViewReq struct {
@@ -309,17 +314,19 @@ type MenuListResp struct {
 }
 
 type MenuList struct {
-	Id       int64  `json:"id"`
-	StatusID int64  `json:"statusId"`
-	Sort     int64  `json:"sort"`
-	ParentID int64  `json:"parentId"`
-	MenuName string `json:"menuName"`
-	Label    string `json:"label"`
-	MenuURL  string `json:"menuUrl"`
-	Icon     string `json:"icon"`
-	ApiUrl   string `json:"apiUrl"`
-	Remark   string `json:"remark"`
-	MenuType int64  `json:"menuType"`
+	Id         int64  `json:"id"`
+	StatusID   int64  `json:"statusId"`
+	Sort       int64  `json:"sort"`
+	ParentID   int64  `json:"parentId"`
+	MenuName   string `json:"menuName"`
+	Label      string `json:"label"`
+	MenuURL    string `json:"menuUrl"`
+	Icon       string `json:"icon"`
+	ApiUrl     string `json:"apiUrl"`
+	Remark     string `json:"remark"`
+	MenuType   int64  `json:"menuType"`
+	CreateTime string `json:"createTime"`
+	UpdateTime string `json:"updateTime"`
 }
 
 type MenuViewReq struct {

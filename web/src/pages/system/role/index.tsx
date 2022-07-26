@@ -136,6 +136,19 @@ const TableList: React.FC<{}> = () => {
       },
     },
     {
+      title: '状态',
+      dataIndex: 'statusId',
+      valueEnum: {
+        1: { text: '启用', status: 'Success' },
+        0: { text: '禁用', status: 'Error' },
+      },
+    },
+    {
+      title: '排序',
+      dataIndex: 'sort',
+      hideInSearch: true,
+    },
+    {
       title: '备注',
       dataIndex: 'remark',
       valueType: 'textarea',
@@ -148,19 +161,6 @@ const TableList: React.FC<{}> = () => {
           },
         ],
       },
-    },
-    {
-      title: '状态',
-      dataIndex: 'statusId',
-      valueEnum: {
-        1: { text: '启用', status: 'Success' },
-        0: { text: '禁用', status: 'Error' },
-      },
-    },
-    {
-      title: '排序',
-      dataIndex: 'sort',
-      hideInSearch: true,
     },
     {
       title: '创建时间',
@@ -181,7 +181,7 @@ const TableList: React.FC<{}> = () => {
     },
     {
       title: '更新时间',
-      dataIndex: 'lastUpdateTime',
+      dataIndex: 'updateTime',
       sorter: true,
       valueType: 'dateTime',
       hideInSearch: true,

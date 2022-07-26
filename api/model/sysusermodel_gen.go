@@ -6,6 +6,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 
@@ -31,8 +32,8 @@ type (
 		Insert(ctx context.Context, data *SysUser) (sql.Result, error)
 		FindOne(ctx context.Context, id int64) (*SysUser, error)
 		FindOneByMobile(ctx context.Context, mobile string) (*SysUser, error)
-		FindAll(ctx context.Context, Current int64, PageSize int64, mobile string) (*[]SysUser, error)
-		Count(ctx context.Context, mobile string) (int64, error)
+		FindAll(ctx context.Context, Current int64, PageSize int64, mobile string, statusId string) (*[]SysUser, error)
+		Count(ctx context.Context, mobile string, statusId string) (int64, error)
 		Update(ctx context.Context, data *SysUser) error
 		UpdatePassword(ctx context.Context, id int64, password string) error
 		UpdateUserStatus(ctx context.Context, id int64, statusId int64) error
@@ -116,13 +117,20 @@ func (m *defaultSysUserModel) FindOneByMobile(ctx context.Context, mobile string
 	}
 }
 
-func (m *defaultSysUserModel) FindAll(ctx context.Context, Current int64, PageSize int64, mobile string) (*[]SysUser, error) {
+func (m *defaultSysUserModel) FindAll(ctx context.Context, Current int64, PageSize int64, mobile string, statusId string) (*[]SysUser, error) {
+
+	mobile = strings.TrimSpace(mobile)
+	status, _ := strconv.Atoi(statusId)
 
 	var query string
-	if len(mobile) == 0 {
+	if len(mobile) == 0 && len(statusId) == 0 {
 		query = fmt.Sprintf("select %s from %s limit ?,?", sysUserRows, m.table)
-	} else {
+	} else if len(mobile) != 0 && len(statusId) == 0 {
 		query = fmt.Sprintf("select %s from %s where mobile like '%%%s%%' limit ?,?", sysUserRows, m.table, mobile)
+	} else if len(mobile) == 0 && len(statusId) != 0 {
+		query = fmt.Sprintf("select %s from %s where status_id = %d limit ?,?", sysUserRows, m.table, status)
+	} else {
+		query = fmt.Sprintf("select %s from %s where mobile like '%%%s%%' and status_id = %d limit ?,?", sysUserRows, m.table, mobile, status)
 	}
 
 	var resp []SysUser
@@ -137,13 +145,20 @@ func (m *defaultSysUserModel) FindAll(ctx context.Context, Current int64, PageSi
 	}
 }
 
-func (m *defaultSysUserModel) Count(ctx context.Context, mobile string) (int64, error) {
+func (m *defaultSysUserModel) Count(ctx context.Context, mobile string, statusId string) (int64, error) {
+
+	mobile = strings.TrimSpace(mobile)
+	status, _ := strconv.Atoi(statusId)
 
 	var query string
-	if len(mobile) == 0 {
+	if len(mobile) == 0 && len(statusId) == 0 {
 		query = fmt.Sprintf("select count(*) as count from %s", m.table)
-	} else {
+	} else if len(mobile) != 0 && len(statusId) == 0 {
 		query = fmt.Sprintf("select count(*) as count from %s where mobile like '%%%s%%'", m.table, mobile)
+	} else if len(mobile) == 0 && len(statusId) != 0 {
+		query = fmt.Sprintf("select count(*) as count from %s where status_id = %d", m.table, status)
+	} else {
+		query = fmt.Sprintf("select count(*) as count from %s where mobile like '%%%s%%' and status_id = %d", m.table, mobile, status)
 	}
 
 	var count int64

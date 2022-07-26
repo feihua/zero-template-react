@@ -30,6 +30,7 @@ type UserListReq {
 	Current  int64  `json:"current,default=1"`
 	PageSize int64  `json:"pageSize,default=20"`
 	Mobile   string `json:"mobile,optional"`
+	StatusID string `json:"statusId,optional"`
 }
 
 type UserListResp {
@@ -43,13 +44,15 @@ type UserListResp {
 }
 
 type UserList {
-	Id       int64  `json:"id"`
-	StatusID int64  `json:"statusId"`
-	Sort     int64  `json:"sort"`
-	UserNo   int64  `json:"userNo"`
-	Mobile   string `json:"mobile"`
-	RealName string `json:"realName"`
-	Remark   string `json:"remark"`
+	Id         int64  `json:"id"`
+	StatusID   int64  `json:"statusId"`
+	Sort       int64  `json:"sort"`
+	UserNo     int64  `json:"userNo"`
+	Mobile     string `json:"mobile"`
+	RealName   string `json:"realName"`
+	Remark     string `json:"remark"`
+	CreateTime string `json:"createTime"`
+	UpdateTime string `json:"updateTime"`
 }
 
 type UserViewReq {
@@ -153,7 +156,7 @@ type UserUpdatePasswordResp {
 type RoleListReq {
 	Current  int64  `json:"current,default=1"`
 	PageSize int64  `json:"pageSize,default=20"`
-	StatusID int64  `json:"statusId,optional"`
+	StatusID string `json:"statusId,optional"`
 	RoleName string `json:"roleName,optional"`
 }
 
@@ -168,11 +171,13 @@ type RoleListResp {
 }
 
 type RoleList {
-	Id       int64  `json:"id"`
-	StatusID int64  `json:"statusId"`
-	Sort     int64  `json:"sort"`
-	RoleName string `json:"roleName"`
-	Remark   string `json:"remark"`
+	Id         int64  `json:"id"`
+	StatusID   int64  `json:"statusId"`
+	Sort       int64  `json:"sort"`
+	RoleName   string `json:"roleName"`
+	Remark     string `json:"remark"`
+	CreateTime string `json:"createTime"`
+	UpdateTime string `json:"updateTime"`
 }
 
 type RoleViewReq {
@@ -312,7 +317,9 @@ type MenuList {
 	ApiUrl   string `json:"apiUrl"`
 	Remark   string `json:"remark"`
 	//	HiddenType interface{} `json:"hiddenType"`
-	MenuType int64 `json:"menuType"`
+	MenuType   int64  `json:"menuType"`
+	CreateTime string `json:"createTime"`
+	UpdateTime string `json:"updateTime"`
 }
 
 type MenuViewReq {

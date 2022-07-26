@@ -25,8 +25,9 @@ func NewRoleListLogic(ctx context.Context, svcCtx *svc.ServiceContext) RoleListL
 }
 
 func (l *RoleListLogic) RoleList(req types.RoleListReq) (resp *types.RoleListResp, err error) {
-	count, _ := l.svcCtx.RoleModel.Count(l.ctx)
-	roleList, err := l.svcCtx.RoleModel.FindAll(l.ctx, req.Current, req.PageSize, req.RoleName)
+
+	roleList, err := l.svcCtx.RoleModel.FindAll(l.ctx, req.Current, req.PageSize, req.RoleName, req.StatusID)
+	count, _ := l.svcCtx.RoleModel.Count(l.ctx, req.RoleName, req.StatusID)
 
 	if err != nil {
 		return nil, errorx.NewDefaultError("查询角色列表异常")
@@ -35,11 +36,13 @@ func (l *RoleListLogic) RoleList(req types.RoleListReq) (resp *types.RoleListRes
 
 	for _, role := range *roleList {
 		list = append(list, types.RoleList{
-			Id:       role.Id,
-			StatusID: role.StatusId,
-			Sort:     role.Sort,
-			RoleName: role.RoleName,
-			Remark:   role.Remark,
+			Id:         role.Id,
+			StatusID:   role.StatusId,
+			Sort:       role.Sort,
+			RoleName:   role.RoleName,
+			Remark:     role.Remark,
+			CreateTime: role.GmtCreate.Format("2006-01-02 15:04:05"),
+			UpdateTime: role.GmtModified.Format("2006-01-02 15:04:05"),
 		})
 	}
 

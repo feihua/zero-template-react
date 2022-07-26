@@ -24,20 +24,22 @@ func NewUserListLogic(ctx context.Context, svcCtx *svc.ServiceContext) UserListL
 
 func (l *UserListLogic) UserList(req types.UserListReq) (resp *types.UserListResp, err error) {
 
-	userList, _ := l.svcCtx.UserModel.FindAll(l.ctx, req.Current, req.PageSize, req.Mobile)
-	count, _ := l.svcCtx.UserModel.Count(l.ctx, req.Mobile)
+	userList, _ := l.svcCtx.UserModel.FindAll(l.ctx, req.Current, req.PageSize, req.Mobile, req.StatusID)
+	count, _ := l.svcCtx.UserModel.Count(l.ctx, req.Mobile, req.StatusID)
 
 	var list []types.UserList
 
 	for _, user := range *userList {
 		list = append(list, types.UserList{
-			Id:       user.Id,
-			StatusID: user.StatusId,
-			Sort:     user.Sort,
-			UserNo:   user.UserNo,
-			Mobile:   user.Mobile,
-			RealName: user.RealName,
-			Remark:   user.Remark.String,
+			Id:         user.Id,
+			StatusID:   user.StatusId,
+			Sort:       user.Sort,
+			UserNo:     user.UserNo,
+			Mobile:     user.Mobile,
+			RealName:   user.RealName,
+			Remark:     user.Remark.String,
+			CreateTime: user.GmtCreate.Format("2006-01-02 15:04:05"),
+			UpdateTime: user.GmtModified.Format("2006-01-02 15:04:05"),
 		})
 	}
 

@@ -36,17 +36,19 @@ func (l *MenuListLogic) MenuList(req types.MenuListReq) (resp *types.MenuListRes
 	var list []types.MenuList
 	for _, menu := range *menuList {
 		list = append(list, types.MenuList{
-			Id:       menu.Id,
-			StatusID: menu.StatusId,
-			Sort:     menu.Sort,
-			ParentID: menu.ParentId,
-			MenuName: menu.MenuName,
-			Label:    menu.MenuName,
-			MenuURL:  menu.MenuUrl,
-			ApiUrl:   menu.ApiUrl,
-			Remark:   menu.Remark.String,
-			MenuType: menu.MenuType,
-			Icon:     menu.MenuIcon.String,
+			Id:         menu.Id,
+			StatusID:   menu.StatusId,
+			Sort:       menu.Sort,
+			ParentID:   menu.ParentId,
+			MenuName:   menu.MenuName,
+			Label:      menu.MenuName,
+			MenuURL:    menu.MenuUrl,
+			ApiUrl:     menu.ApiUrl,
+			Remark:     menu.Remark.String,
+			MenuType:   menu.MenuType,
+			Icon:       menu.MenuIcon.String,
+			CreateTime: menu.GmtCreate.Format("2006-01-02 15:04:05"),
+			UpdateTime: menu.GmtModified.Format("2006-01-02 15:04:05"),
 		})
 	}
 
