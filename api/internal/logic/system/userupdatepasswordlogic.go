@@ -2,6 +2,7 @@ package system
 
 import (
 	"context"
+	"fmt"
 	"zero-template-react/api/internal/svc"
 	"zero-template-react/api/internal/types"
 
@@ -29,6 +30,7 @@ func (l *UserUpdatePasswordLogic) UserUpdatePassword(req types.UserUpdatePasswor
 	//	return nil, errorx.NewDefaultError("重置用户密码异常")
 	//}
 
+	fmt.Println("更新密码成功")
 	return &types.UserUpdatePasswordResp{
 		Code: 200,
 		Msg:  "",

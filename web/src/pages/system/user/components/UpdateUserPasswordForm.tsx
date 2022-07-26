@@ -1,10 +1,10 @@
 import React, {useEffect} from 'react';
-import {Form, Input, Modal, Select} from 'antd';
-import { UserListItem} from '../data.d';
+import {Form, Input, Modal} from 'antd';
+import {UpdatePasswordParams, UserListItem} from '../data.d';
 
 export interface UpdateFormProps {
   onCancel: () => void;
-  onSubmit: (values: Partial<UserListItem>) => void;
+  onSubmit: (values: Partial<UpdatePasswordParams>) => void;
   updatePasswordModalVisible: boolean;
   currentData: Partial<UserListItem>;
 }
@@ -17,7 +17,6 @@ const formLayout = {
 
 const UpdateUserPasswordForm: React.FC<UpdateFormProps> = (props) => {
   const [form] = Form.useForm();
-  const { Option } = Select;
 
   const {
     onSubmit,
@@ -63,31 +62,16 @@ const UpdateUserPasswordForm: React.FC<UpdateFormProps> = (props) => {
           <Input id="update-id" placeholder="请输入主键" />
         </FormItem>
         <FormItem
-          name="realName"
-          label="用户名"
+          name="mobilePsw"
+          label="新密码"
         >
-          <Input id="update-name" placeholder={'请输入用户名'}/>
+          <Input id="update-mobilePsw" placeholder={'请输入新密码'}/>
         </FormItem>
         <FormItem
-          name="mobile"
-          label="手机号"
+          name="rePwd"
+          label="确认密码"
         >
-          <Input id="update-mobile" placeholder={'请输入手机号'}/>
-        </FormItem>
-        <FormItem
-          name="remark"
-          label="备注"
-        >
-          <Input id="update-remark" placeholder={'请输入备注'}/>
-        </FormItem>
-        <FormItem
-          name="status"
-          label="状态"
-        >
-          <Select id="statusID" placeholder={'请选择状态'}>
-            <Option value={0}>禁用</Option>
-            <Option value={1}>启用</Option>
-          </Select>
+          <Input id="update-rePwd" placeholder={'请输确认密码'}/>
         </FormItem>
       </>
     );
@@ -100,7 +84,7 @@ const UpdateUserPasswordForm: React.FC<UpdateFormProps> = (props) => {
     <Modal
       forceRender
       destroyOnClose
-      title="修改用户"
+      title="密码修改"
       visible={updatePasswordModalVisible}
       {...modalFooter}
     >

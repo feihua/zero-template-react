@@ -1,5 +1,5 @@
 import { request } from 'umi';
-import { UserListParams, UserListItem } from './data.d';
+import {UserListParams, UserListItem, UpdatePasswordParams} from './data.d';
 
 export async function queryUserList(params?: UserListParams) {
   return request('/api/system/user/list', {
@@ -46,4 +46,14 @@ export async function updateUser(params: UserListItem) {
     },
   });
 }
+
+export async function updatePassword(params: UpdatePasswordParams) {
+  return request('/api/system/user/updatePassword', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
 

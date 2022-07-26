@@ -9,12 +9,13 @@ import UpdateUserForm from './components/UpdateUserForm';
 import UpdateUserPasswordForm from './components/UpdateUserPasswordForm';
 import UpdateUserRoleForm from './components/UpdateUserRoleForm';
 
-import {UserListItem} from './data.d';
+import {UpdatePasswordParams, UserListItem} from './data.d';
 import {
   queryUserList,
   updateUser,
   addUser,
   removeUser,
+  updatePassword,
 } from './service';
 import {hasPm} from "@/utils/utils";
 
@@ -48,6 +49,24 @@ const handleUpdate = async (fields: Partial<UserListItem>) => {
   try {
     fields.sort = Number(fields.sort)
     await updateUser(fields as UserListItem);
+    hide();
+    message.success('更新成功');
+    return true;
+  } catch (error) {
+    hide();
+    message.error('更新失败请重试！');
+    return false;
+  }
+};
+
+/**
+ * 更新节点
+ * @param fields
+ */
+const handleUpdatePassword = async (fields: Partial<UpdatePasswordParams>) => {
+  const hide = message.loading('正在更新');
+  try {
+    await updatePassword(fields as UpdatePasswordParams);
     hide();
     message.success('更新成功');
     return true;
@@ -334,7 +353,7 @@ const TableList: React.FC<{}> = () => {
       <UpdateUserPasswordForm
         key={'UpdateUserPasswordForm'}
         onSubmit={async (value) => {
-          const success = await handleUpdate(value);
+          const success = await handleUpdatePassword(value);
           if (success) {
             handlePasswordModalVisible(false);
             setStepFormValues({});

@@ -29,6 +29,13 @@ export interface UserListParams {
 
 }
 
+export interface UpdatePasswordParams {
+  id:        number;
+  mobilePsw: string;
+  rePwd:     string;
+
+}
+
 export interface RoleList {
   id: number;
   name: string;
