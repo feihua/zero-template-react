@@ -26,11 +26,13 @@ func NewUserDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) UserDel
 
 func (l *UserDeleteLogic) UserDelete(req types.UserDeleteReq) (resp *types.UserDeleteResp, err error) {
 
-	err = l.svcCtx.UserModel.Delete(l.ctx, req.Id)
+	for _, id := range req.Ids {
+		err = l.svcCtx.UserModel.Delete(l.ctx, id)
 
-	if err != nil {
-		logx.WithContext(l.ctx).Errorf("根据userId: %d,删除用户异常:%s", req.Id, err.Error())
-		return nil, errorx.NewDefaultError("删除用户异常")
+		if err != nil {
+			logx.WithContext(l.ctx).Errorf("根据userId: %d,删除用户异常:%s", id, err.Error())
+			return nil, errorx.NewDefaultError("删除用户异常")
+		}
 	}
 
 	return &types.UserDeleteResp{

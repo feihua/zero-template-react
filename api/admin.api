@@ -121,7 +121,7 @@ type UserStatusUpdateResp {
 }
 
 type UserDeleteReq {
-	Id int64 `json:"id"`
+	Ids []int64 `json:"ids"`
 }
 type UserDeleteResp {
 	Timestamp string `json:"timestamp"`
@@ -194,6 +194,7 @@ type RoleViewData {
 type RoleSaveReq {
 	RoleName string `json:"roleName"`
 	Remark   string `json:"remark"`
+	Sort     string `json:"sort"`
 }
 type RoleSaveResp {
 	Timestamp string `json:"timestamp"`
@@ -240,7 +241,7 @@ type RoleStatusUpdateResp {
 }
 
 type RoleDeleteReq {
-	Id int64 `json:"id"`
+	Ids []int64 `json:"ids"`
 }
 type RoleDeleteResp {
 	Timestamp string `json:"timestamp"`
@@ -396,7 +397,7 @@ type MenuStatusUpdateResp {
 }
 
 type MenuDeleteReq {
-	Id int64 `json:"id"`
+	Ids []int64 `json:"ids"`
 }
 type MenuDeleteResp {
 	Timestamp string `json:"timestamp"`
@@ -419,13 +420,21 @@ type MenuRoleListResp {
 	Data MenuRoleListData `json:"data"`
 }
 
+type MenuRoleList {
+	Id       int64  `json:"id"`
+	ParentID int64  `json:"parentId"`
+	Title    string `json:"title"`
+	Key      string `json:"key"`
+}
+
 type MenuRoleListData {
-	List []int64 `json:"list"`
+	RoleMenus    []int64        `json:"roleMenus"`
+	MenuRoleList []MenuRoleList `json:"menuRoleList"`
 }
 
 type MenuRoleSaveReq {
-	MenuId []int64 `json:"menuId"`
-	RoleId int64   `json:"roleId"`
+	MenuIds []int64 `json:"menuIds"`
+	RoleId  int64   `json:"roleId"`
 }
 type MenuRoleSaveResp {
 	Timestamp string `json:"timestamp"`

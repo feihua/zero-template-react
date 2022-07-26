@@ -34,7 +34,7 @@ func (l *MenuRoleSaveLogic) MenuRoleSave(req types.MenuRoleSaveReq) (resp *types
 
 	_ = l.svcCtx.MenuRoleModel.DeleteByRoleId(l.ctx, req.RoleId)
 
-	ids := req.MenuId
+	ids := req.MenuIds
 	for _, id := range ids {
 		_, _ = l.svcCtx.MenuRoleModel.Insert(l.ctx, &model.SysMenuRole{
 			GmtCreate:   time.Now(),

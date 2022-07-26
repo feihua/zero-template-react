@@ -6,6 +6,9 @@ import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import CreateUserForm from './components/CreateUserForm';
 import UpdateUserForm from './components/UpdateUserForm';
+import UpdateUserPasswordForm from './components/UpdateUserPasswordForm';
+import UpdateUserRoleForm from '@/pages/system/user/components/UpdateUserRoleForm';
+
 import { UserListItem } from './data.d';
 import {
   queryUserList,
@@ -24,7 +27,7 @@ const { confirm } = Modal;
 const handleAdd = async (fields: UserListItem) => {
   const hide = message.loading('正在添加');
   try {
-    fields.deptId=Number(fields.deptId)
+    fields.sort=Number(fields.sort)
     await addUser({ ...fields });
     hide();
     message.success('添加成功');
@@ -43,7 +46,7 @@ const handleAdd = async (fields: UserListItem) => {
 const handleUpdate = async (fields: Partial<UserListItem>) => {
   const hide = message.loading('正在更新');
   try {
-    fields.deptId=Number(fields.deptId)
+    fields.sort=Number(fields.sort)
     await updateUser(fields as UserListItem);
     hide();
     message.success('更新成功');
@@ -98,6 +101,8 @@ const handleRemove = async (selectedRows: UserListItem[]) => {
 
 const TableList: React.FC<{}> = () => {
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
+  const [updateRoleModalVisible, handleRoleModalVisible] = useState<boolean>(false);
+  const [updatePasswordModalVisible, handlePasswordModalVisible] = useState<boolean>(false);
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [stepFormValues, setStepFormValues] = useState({});
   const actionRef = useRef<ActionType>();
@@ -152,21 +157,9 @@ const TableList: React.FC<{}> = () => {
       dataIndex: 'remark',
     },
     {
-      title: '创建人',
-      dataIndex: 'createBy',
-      hideInSearch: true,
-      hideInTable: true,
-    },
-    {
       title: '创建时间',
       dataIndex: 'createTime',
       valueType: 'dateTime',
-      hideInSearch: true,
-      hideInTable: true,
-    },
-    {
-      title: '更新人',
-      dataIndex: 'lastUpdateBy',
       hideInSearch: true,
       hideInTable: true,
     },
@@ -201,7 +194,7 @@ const TableList: React.FC<{}> = () => {
             size="small"
             disabled={!hasPm("/api/system/role/userRoleSave")}
             onClick={() => {
-              handleUpdateModalVisible(true);
+              handleRoleModalVisible(true);
               setStepFormValues(record);
             }}
           >
@@ -213,7 +206,7 @@ const TableList: React.FC<{}> = () => {
             size="small"
             disabled={!hasPm("/api/system/user/password")}
             onClick={() => {
-              handleUpdateModalVisible(true);
+              handlePasswordModalVisible(true);
               setStepFormValues(record);
             }}
           >
@@ -316,28 +309,68 @@ const TableList: React.FC<{}> = () => {
       currentData={stepFormValues}
     />
 
-      <Drawer
-        width={600}
-        visible={!!row}
-        onClose={() => {
-          setRow(undefined);
-        }}
-        closable={false}
-      >
-        {row?.id && (
-          <ProDescriptions<UserListItem>
-            column={2}
-            title={row?.id}
-            request={async () => ({
-              data: row || {},
-            })}
-            params={{
-              id: row?.id,
-            }}
-            columns={columns}
-          />
-        )}
-      </Drawer>
+    <UpdateUserRoleForm
+      key={'UpdateUserRoleForm'}
+      onSubmit={async (value) => {
+        const success = await handleUpdate(value);
+        if (success) {
+          handleRoleModalVisible(false);
+          setStepFormValues({});
+          if (actionRef.current) {
+            actionRef.current.reload();
+          }
+        }
+      }}
+      onCancel={() => {
+        handleRoleModalVisible(false);
+        setStepFormValues({});
+      }}
+      updateRoleModalVisible={updateRoleModalVisible}
+      currentData={stepFormValues}
+    />
+
+    <UpdateUserPasswordForm
+      key={'UpdateUserPasswordForm'}
+      onSubmit={async (value) => {
+        const success = await handleUpdate(value);
+        if (success) {
+          handlePasswordModalVisible(false);
+          setStepFormValues({});
+          if (actionRef.current) {
+            actionRef.current.reload();
+          }
+        }
+      }}
+      onCancel={() => {
+        handlePasswordModalVisible(false);
+        setStepFormValues({});
+      }}
+      updatePasswordModalVisible={updatePasswordModalVisible}
+      currentData={stepFormValues}
+    />
+
+    <Drawer
+      width={600}
+      visible={!!row}
+      onClose={() => {
+        setRow(undefined);
+      }}
+      closable={false}
+    >
+      {row?.id && (
+        <ProDescriptions<UserListItem>
+          column={2}
+          title={row?.id}
+          request={async () => ({
+            data: row || {},
+          })}
+          params={{
+            id: row?.id,
+          }}
+          columns={columns}
+        />
+      )}
+    </Drawer>
     </PageContainer>
   );
 };

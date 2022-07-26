@@ -26,11 +26,13 @@ func NewRoleDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) RoleDel
 
 func (l *RoleDeleteLogic) RoleDelete(req types.RoleDeleteReq) (*types.RoleDeleteResp, error) {
 
-	err := l.svcCtx.RoleModel.Delete(l.ctx, req.Id)
+	for _, id := range req.Ids {
+		err := l.svcCtx.RoleModel.Delete(l.ctx, id)
 
-	if err != nil {
-		logx.WithContext(l.ctx).Errorf("根据roleId: %d,删除角色异常:%s", req.Id, err.Error())
-		return nil, errorx.NewDefaultError("删除角色异常")
+		if err != nil {
+			logx.WithContext(l.ctx).Errorf("根据roleId: %d,删除角色异常:%s", id, err.Error())
+			return nil, errorx.NewDefaultError("删除角色异常")
+		}
 	}
 
 	return &types.RoleDeleteResp{

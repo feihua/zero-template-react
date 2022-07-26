@@ -119,7 +119,7 @@ type UserStatusUpdateResp struct {
 }
 
 type UserDeleteReq struct {
-	Id int64 `json:"id"`
+	Ids []int64 `json:"ids"`
 }
 
 type UserDeleteResp struct {
@@ -196,6 +196,7 @@ type RoleViewData struct {
 type RoleSaveReq struct {
 	RoleName string `json:"roleName"`
 	Remark   string `json:"remark"`
+	Sort     string `json:"sort"`
 }
 
 type RoleSaveResp struct {
@@ -245,7 +246,7 @@ type RoleStatusUpdateResp struct {
 }
 
 type RoleDeleteReq struct {
-	Id int64 `json:"id"`
+	Ids []int64 `json:"ids"`
 }
 
 type RoleDeleteResp struct {
@@ -348,6 +349,7 @@ type MenuSaveReq struct {
 	MenuName string `json:"menuName"`
 	MenuType int64  `json:"menuType"`
 	MenuUrl  string `json:"menuUrl"`
+	StatusId int64  `json:"statusId,default=1"`
 	ParentId int64  `json:"parentId,default=0"`
 	Remark   string `json:"remark"`
 	Sort     int64  `json:"sort"`
@@ -406,7 +408,7 @@ type MenuStatusUpdateResp struct {
 }
 
 type MenuDeleteReq struct {
-	Id int64 `json:"id"`
+	Ids []int64 `json:"ids"`
 }
 
 type MenuDeleteResp struct {
@@ -430,13 +432,21 @@ type MenuRoleListResp struct {
 	Data MenuRoleListData `json:"data"`
 }
 
+type MenuRoleList struct {
+	Id       int64  `json:"id"`
+	ParentID int64  `json:"parentId"`
+	Title    string `json:"title"`
+	Key      string `json:"key"`
+}
+
 type MenuRoleListData struct {
-	List []int64 `json:"list"`
+	RoleMenus    []int64        `json:"roleMenus"`
+	MenuRoleList []MenuRoleList `json:"menuRoleList"`
 }
 
 type MenuRoleSaveReq struct {
-	MenuId []int64 `json:"menuId"`
-	RoleId int64   `json:"roleId"`
+	MenuIds []int64 `json:"menuIds"`
+	RoleId  int64   `json:"roleId"`
 }
 
 type MenuRoleSaveResp struct {

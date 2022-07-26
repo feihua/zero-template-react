@@ -10,8 +10,8 @@ export async function queryRole(params?: RoleListParams) {
   });
 }
 
-export async function queryMenuByRoleId(params: { id?: number }) {
-  return request('/api/sys/role/queryMenuByRoleId', {
+export async function queryMenuByRoleId(params: { roleId?: number }) {
+  return request('/api/system/menu/roleMenuList', {
     method: 'POST',
     data: {
       ...params,
@@ -20,7 +20,7 @@ export async function queryMenuByRoleId(params: { id?: number }) {
 }
 
 export async function updateRoleMenu(params: { roleId: number ,menuIds:number[]}) {
-  return request('/api/sys/role/updateRoleMenu', {
+  return request('/api/system/menu/roleMenuSave', {
     method: 'POST',
     data: {
       ...params,
@@ -29,7 +29,7 @@ export async function updateRoleMenu(params: { roleId: number ,menuIds:number[]}
 }
 
 export async function removeRoleOne(params: { id: number }) {
-  return request('/api/sys/role/delete', {
+  return request('/api/system/role/delete', {
     method: 'POST',
     data: {
       ...params,
@@ -38,7 +38,7 @@ export async function removeRoleOne(params: { id: number }) {
 }
 
 export async function removeRole(params: { ids: number[] }) {
-  return request('/api/sys/role/delete', {
+  return request('/api/system/role/delete', {
     method: 'POST',
     data: {
       ...params,
@@ -47,7 +47,7 @@ export async function removeRole(params: { ids: number[] }) {
 }
 
 export async function addRole(params: RoleListItem) {
-  return request('/api/sys/role/add', {
+  return request('/api/system/role/save', {
     method: 'POST',
     data: {
       ...params,
@@ -55,8 +55,8 @@ export async function addRole(params: RoleListItem) {
   });
 }
 
-export async function updateRule(params: RoleListItem) {
-  return request('/api/sys/role/update', {
+export async function updateRole(params: RoleListItem) {
+  return request('/api/system/role/update', {
     method: 'POST',
     data: {
       ...params,

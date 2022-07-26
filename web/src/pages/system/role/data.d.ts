@@ -1,7 +1,9 @@
 export interface RoleListItem {
-  id: number;
-  name: string;
-  remark: string;
+  id:       number;
+  statusID: number;
+  sort:     number;
+  roleName: string;
+  remark:   string;
 }
 
 export interface RoleListPagination {

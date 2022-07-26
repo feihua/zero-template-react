@@ -1,6 +1,11 @@
 export interface UserListItem {
-  id: number;
-  deptId: number;
+  id:       number;
+  statusId: number;
+  sort:     number;
+  userNo:   number;
+  mobile:   string;
+  realName: string;
+  remark:   string;
 }
 
 export interface UserListPagination {
@@ -30,13 +35,6 @@ export interface RoleList {
   remark: string;
 }
 
-
-export interface JobList {
-  id: number;
-  jobName: string;
-}
-
-export interface SelectData {
+export interface RoleListData {
   roleList: RoleList[];
-  jobList: JobList[];
 }

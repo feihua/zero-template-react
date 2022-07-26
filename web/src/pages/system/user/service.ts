@@ -11,7 +11,7 @@ export async function queryUserList(params?: UserListParams) {
 }
 
 export async function querySelectAllData(params?: UserListParams) {
-  return request('/api/sys/user/selectAllData', {
+  return request('/api/system/user/selectAllData', {
     method: 'POST',
     data: {
       ...params,
@@ -21,7 +21,7 @@ export async function querySelectAllData(params?: UserListParams) {
 
 
 export async function removeUser(params: { ids: number[] }) {
-  return request('/api/sys/user/delete', {
+  return request('/api/system/user/delete', {
     method: 'POST',
     data: {
       ...params,
@@ -30,7 +30,7 @@ export async function removeUser(params: { ids: number[] }) {
 }
 
 export async function addUser(params: UserListItem) {
-  return request('/api/sys/user/add', {
+  return request('/api/system/user/save', {
     method: 'POST',
     data: {
       ...params,
@@ -39,7 +39,7 @@ export async function addUser(params: UserListItem) {
 }
 
 export async function updateUser(params: UserListItem) {
-  return request('/api/sys/user/update', {
+  return request('/api/system/user/update', {
     method: 'POST',
     data: {
       ...params,

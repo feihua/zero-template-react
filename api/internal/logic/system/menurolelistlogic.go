@@ -2,6 +2,7 @@ package system
 
 import (
 	"context"
+	"strconv"
 	"zero-template-react/api/internal/svc"
 	"zero-template-react/api/internal/types"
 
@@ -34,11 +35,25 @@ func (l *MenuRoleListLogic) MenuRoleList(req types.MenuRoleListReq) (resp *types
 		menuIds, _ = l.svcCtx.MenuRoleModel.FindAllByRoleId(l.ctx, req.RoleId)
 	}
 
+	findAll, _ := l.svcCtx.MenuModel.FindAll(l.ctx, "")
+
+	var menuRoleList []types.MenuRoleList
+
+	for _, menu := range *findAll {
+		menuRoleList = append(menuRoleList, types.MenuRoleList{
+			Id:       menu.Id,
+			ParentID: menu.ParentId,
+			Title:    menu.MenuName,
+			Key:      strconv.FormatInt(menu.Id, 10),
+		})
+	}
+
 	return &types.MenuRoleListResp{
 		Code: 200,
 		Msg:  "",
 		Data: types.MenuRoleListData{
-			List: menuIds,
+			RoleMenus:    menuIds,
+			MenuRoleList: menuRoleList,
 		},
 	}, nil
 }

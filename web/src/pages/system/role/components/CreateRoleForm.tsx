@@ -46,16 +46,22 @@ const CreateRoleForm: React.FC<CreateFormProps> = (props) => {
     return (
       <>
         <FormItem
-          name="name"
+          name="roleName"
           label="角色名称"
         >
-          <Input id="update-name" placeholder={'请输入角色名称'}/>
+          <Input id="add-roleName" placeholder={'请输入角色名称'}/>
+        </FormItem>
+        <FormItem
+          name="sort"
+          label="排序"
+        >
+          <Input id="add-sort" placeholder={'请输入角色名称'}/>
         </FormItem>
         <FormItem
           name="remark"
           label="备注"
         >
-          <Input.TextArea id="update-remark" placeholder={'请输入备注'} rows={4}/>
+          <Input.TextArea id="add-remark" placeholder={'请输入备注'} rows={4}/>
         </FormItem>
 
       </>

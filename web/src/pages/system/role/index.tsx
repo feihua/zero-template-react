@@ -10,7 +10,7 @@ import UpdateRoleForm from './components/UpdateRoleForm';
 import { RoleListItem } from './data.d';
 import {
   queryRole,
-  updateRule,
+  updateRole,
   addRole,
   removeRole,
   removeRoleOne,
@@ -45,7 +45,7 @@ const handleAdd = async (fields: RoleListItem) => {
 const handleUpdate = async (fields: Partial<RoleListItem>) => {
   const hide = message.loading('正在更新');
   try {
-    await updateRule(fields as RoleListItem);
+    await updateRole(fields as RoleListItem);
     hide();
 
     message.success('更新成功');
@@ -114,7 +114,7 @@ const TableList: React.FC<{}> = () => {
       icon: <ExclamationCircleOutlined />,
       content: '删除的记录不能恢复,请确认!',
       onOk() {
-        handleRemoveOne(id).then((r) => {
+        handleRemoveOne(id).then(() => {
           actionRef.current?.reloadAndRest?.();
         });
       },
@@ -130,7 +130,7 @@ const TableList: React.FC<{}> = () => {
     },
     {
       title: '角色名称',
-      dataIndex: 'name',
+      dataIndex: 'roleName',
       render: (dom, entity) => {
         return <a onClick={() => setRow(entity)}>{dom}</a>;
       },
@@ -151,15 +151,15 @@ const TableList: React.FC<{}> = () => {
     },
     {
       title: '状态',
-      dataIndex: 'status',
+      dataIndex: 'statusId',
       valueEnum: {
         1: { text: '启用', status: 'Success' },
         0: { text: '禁用', status: 'Error' },
       },
     },
     {
-      title: '创建人',
-      dataIndex: 'createBy',
+      title: '排序',
+      dataIndex: 'sort',
       hideInSearch: true,
     },
     {
@@ -178,12 +178,6 @@ const TableList: React.FC<{}> = () => {
         }
         return defaultRender(item);
       },
-    },
-    {
-      title: '更新人',
-      dataIndex: 'lastUpdateBy',
-      hideInForm: true,
-      hideInSearch: true,
     },
     {
       title: '更新时间',

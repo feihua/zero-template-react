@@ -63,25 +63,31 @@ const UpdateRoleForm: React.FC<UpdateFormProps> = (props) => {
           <Input id="update-id" placeholder="请输入主键" />
         </FormItem>
         <FormItem
-          name="name"
+          name="roleName"
           label="角色名称"
         >
-          <Input id="update-name" placeholder={'请输入角色名称'}/>
+          <Input id="update-roleName" placeholder={'请输入角色名称'}/>
+        </FormItem>
+        <FormItem
+          name="sort"
+          label="排序"
+        >
+          <Input id="update-sort" placeholder={'请输入角色名称'}/>
+        </FormItem>
+        <FormItem
+          name="statusId"
+          label="状态"
+        >
+          <Select id="statusId" placeholder={'请选择状态'}>
+            <Option value={0}>禁用</Option>
+            <Option value={1}>启用</Option>
+          </Select>
         </FormItem>
         <FormItem
           name="remark"
           label="备注"
         >
           <Input.TextArea id="update-remark" placeholder={'请输入备注'} rows={4}/>
-        </FormItem>
-        <FormItem
-          name="status"
-          label="状态"
-        >
-          <Select id="status" placeholder={'请选择状态'}>
-            <Option value={0}>禁用</Option>
-            <Option value={1}>启用</Option>
-          </Select>
         </FormItem>
       </>
     );
