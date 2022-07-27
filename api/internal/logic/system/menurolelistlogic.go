@@ -25,19 +25,10 @@ func NewMenuRoleListLogic(ctx context.Context, svcCtx *svc.ServiceContext) MenuR
 
 func (l *MenuRoleListLogic) MenuRoleList(req types.MenuRoleListReq) (resp *types.MenuRoleListResp, err error) {
 
-	var menuIds []int64
-	if req.RoleId == 1 {
-		menus, _ := l.svcCtx.MenuModel.FindAll(l.ctx, "")
-		for _, menu := range *menus {
-			menuIds = append(menuIds, menu.Id)
-		}
-	} else {
-		menuIds, _ = l.svcCtx.MenuRoleModel.FindAllByRoleId(l.ctx, req.RoleId)
-	}
-
 	findAll, _ := l.svcCtx.MenuModel.FindAll(l.ctx, "")
 
 	var menuRoleList []types.MenuRoleList
+	var menuIds []int64
 
 	for _, menu := range *findAll {
 		menuRoleList = append(menuRoleList, types.MenuRoleList{
@@ -46,6 +37,12 @@ func (l *MenuRoleListLogic) MenuRoleList(req types.MenuRoleListReq) (resp *types
 			Title:    menu.MenuName,
 			Key:      strconv.FormatInt(menu.Id, 10),
 		})
+
+		menuIds = append(menuIds, menu.Id)
+	}
+
+	if req.RoleId != 1 {
+		menuIds, _ = l.svcCtx.MenuRoleModel.FindAllByRoleId(l.ctx, req.RoleId)
 	}
 
 	return &types.MenuRoleListResp{

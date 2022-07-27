@@ -30,6 +30,7 @@ type (
 		Insert(ctx context.Context, data *SysRoleUser) (sql.Result, error)
 		FindOne(ctx context.Context, id int64) (*SysRoleUser, error)
 		FindAllByUserId(ctx context.Context, userId int64) (*SysRoleUser, error)
+		FindAllRoleIdsByUserId(ctx context.Context, userId int64) ([]int64, error)
 		Update(ctx context.Context, data *SysRoleUser) error
 		Delete(ctx context.Context, id int64) error
 		DeleteByUserId(ctx context.Context, id int64) error
@@ -91,13 +92,28 @@ func (m *defaultSysRoleUserModel) FindOne(ctx context.Context, id int64) (*SysRo
 }
 
 func (m *defaultSysRoleUserModel) FindAllByUserId(ctx context.Context, userId int64) (*SysRoleUser, error) {
-	query := fmt.Sprintf("select %s from %s where user_id = ? and role_id = 1 limit ?,?", sysRoleUserRows, m.table)
+	query := fmt.Sprintf("select %s from %s where user_id = ? and role_id = 1", sysRoleUserRows, m.table)
 
 	var resp SysRoleUser
 	err := m.QueryRowNoCacheCtx(ctx, &resp, query, userId)
 	switch err {
 	case nil:
 		return &resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+
+func (m *defaultSysRoleUserModel) FindAllRoleIdsByUserId(ctx context.Context, userId int64) ([]int64, error) {
+	query := fmt.Sprintf("select role_id from %s where user_id = ?", m.table)
+
+	var ids []int64
+	err := m.QueryRowsNoCacheCtx(ctx, &ids, query, userId)
+	switch err {
+	case nil:
+		return ids, nil
 	case sqlc.ErrNotFound:
 		return nil, ErrNotFound
 	default:

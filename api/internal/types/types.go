@@ -276,15 +276,18 @@ type RoleUserListResp struct {
 }
 
 type RoleUserListData struct {
-	List []RoleUserList `json:"list"`
+	AllRoles       []RoleUserList `json:"allRoles"`
+	AllUserRoleIds []int64        `json:"allUserRoleIds"`
 }
 
 type RoleUserList struct {
-	Id       int64  `json:"id"`
-	StatusID int64  `json:"statusId"`
-	Sort     int64  `json:"sort"`
-	RoleName string `json:"roleName"`
-	Remark   string `json:"remark"`
+	Id         int64  `json:"id"`
+	StatusID   int64  `json:"statusId"`
+	Sort       int64  `json:"sort"`
+	RoleName   string `json:"roleName"`
+	Remark     string `json:"remark"`
+	CreateTime string `json:"createTime"`
+	UpdateTime string `json:"updateTime"`
 }
 
 type RoleUserSaveReq struct {
