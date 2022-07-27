@@ -23,8 +23,8 @@ var (
 	sysRoleRowsExpectAutoSet   = strings.Join(stringx.Remove(sysRoleFieldNames, "`id`", "`create_time`", "`update_time`", "`create_at`", "`update_at`"), ",")
 	sysRoleRowsWithPlaceHolder = strings.Join(stringx.Remove(sysRoleFieldNames, "`id`", "`gmt_create`", "`create_time`", "`update_time`", "`create_at`", "`update_at`"), "=?,") + "=?"
 
-	cacheZeroVueSysRoleIdPrefix       = "cache:zeroVue:sysRole:id:"
-	cacheZeroVueSysRoleRoleNamePrefix = "cache:zeroVue:sysRole:roleName:"
+	cacheZeroReactSysRoleIdPrefix       = "cache:zeroReact:sysRole:id:"
+	cacheZeroReactSysRoleRoleNamePrefix = "cache:zeroReact:sysRole:roleName:"
 )
 
 type (
@@ -69,19 +69,19 @@ func (m *defaultSysRoleModel) Delete(ctx context.Context, id int64) error {
 		return err
 	}
 
-	zeroVueSysRoleIdKey := fmt.Sprintf("%s%v", cacheZeroVueSysRoleIdPrefix, id)
-	zeroVueSysRoleRoleNameKey := fmt.Sprintf("%s%v", cacheZeroVueSysRoleRoleNamePrefix, data.RoleName)
+	zeroReactSysRoleIdKey := fmt.Sprintf("%s%v", cacheZeroReactSysRoleIdPrefix, id)
+	zeroReactSysRoleRoleNameKey := fmt.Sprintf("%s%v", cacheZeroReactSysRoleRoleNamePrefix, data.RoleName)
 	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("delete from %s where `id` = ?", m.table)
 		return conn.ExecCtx(ctx, query, id)
-	}, zeroVueSysRoleIdKey, zeroVueSysRoleRoleNameKey)
+	}, zeroReactSysRoleIdKey, zeroReactSysRoleRoleNameKey)
 	return err
 }
 
 func (m *defaultSysRoleModel) FindOne(ctx context.Context, id int64) (*SysRole, error) {
-	zeroVueSysRoleIdKey := fmt.Sprintf("%s%v", cacheZeroVueSysRoleIdPrefix, id)
+	zeroReactSysRoleIdKey := fmt.Sprintf("%s%v", cacheZeroReactSysRoleIdPrefix, id)
 	var resp SysRole
-	err := m.QueryRowCtx(ctx, &resp, zeroVueSysRoleIdKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
+	err := m.QueryRowCtx(ctx, &resp, zeroReactSysRoleIdKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
 		query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", sysRoleRows, m.table)
 		return conn.QueryRowCtx(ctx, v, query, id)
 	})
@@ -96,9 +96,9 @@ func (m *defaultSysRoleModel) FindOne(ctx context.Context, id int64) (*SysRole, 
 }
 
 func (m *defaultSysRoleModel) FindOneByRoleName(ctx context.Context, roleName string) (*SysRole, error) {
-	zeroVueSysRoleRoleNameKey := fmt.Sprintf("%s%v", cacheZeroVueSysRoleRoleNamePrefix, roleName)
+	zeroReactSysRoleRoleNameKey := fmt.Sprintf("%s%v", cacheZeroReactSysRoleRoleNamePrefix, roleName)
 	var resp SysRole
-	err := m.QueryRowIndexCtx(ctx, &resp, zeroVueSysRoleRoleNameKey, m.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {
+	err := m.QueryRowIndexCtx(ctx, &resp, zeroReactSysRoleRoleNameKey, m.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {
 		query := fmt.Sprintf("select %s from %s where `role_name` = ? limit 1", sysRoleRows, m.table)
 		if err := conn.QueryRowCtx(ctx, &resp, query, roleName); err != nil {
 			return nil, err
@@ -188,12 +188,12 @@ func (m *defaultSysRoleModel) Count(ctx context.Context, roleName string, status
 }
 
 func (m *defaultSysRoleModel) Insert(ctx context.Context, data *SysRole) (sql.Result, error) {
-	zeroVueSysRoleIdKey := fmt.Sprintf("%s%v", cacheZeroVueSysRoleIdPrefix, data.Id)
-	zeroVueSysRoleRoleNameKey := fmt.Sprintf("%s%v", cacheZeroVueSysRoleRoleNamePrefix, data.RoleName)
+	zeroReactSysRoleIdKey := fmt.Sprintf("%s%v", cacheZeroReactSysRoleIdPrefix, data.Id)
+	zeroReactSysRoleRoleNameKey := fmt.Sprintf("%s%v", cacheZeroReactSysRoleRoleNamePrefix, data.RoleName)
 	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?)", m.table, sysRoleRowsExpectAutoSet)
 		return conn.ExecCtx(ctx, query, data.GmtCreate, data.GmtModified, data.StatusId, data.Sort, data.RoleName, data.Remark)
-	}, zeroVueSysRoleIdKey, zeroVueSysRoleRoleNameKey)
+	}, zeroReactSysRoleIdKey, zeroReactSysRoleRoleNameKey)
 	return ret, err
 }
 
@@ -203,12 +203,12 @@ func (m *defaultSysRoleModel) Update(ctx context.Context, newData *SysRole) erro
 		return err
 	}
 
-	zeroVueSysRoleIdKey := fmt.Sprintf("%s%v", cacheZeroVueSysRoleIdPrefix, data.Id)
-	zeroVueSysRoleRoleNameKey := fmt.Sprintf("%s%v", cacheZeroVueSysRoleRoleNamePrefix, data.RoleName)
+	zeroReactSysRoleIdKey := fmt.Sprintf("%s%v", cacheZeroReactSysRoleIdPrefix, data.Id)
+	zeroReactSysRoleRoleNameKey := fmt.Sprintf("%s%v", cacheZeroReactSysRoleRoleNamePrefix, data.RoleName)
 	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, sysRoleRowsWithPlaceHolder)
 		return conn.ExecCtx(ctx, query, newData.GmtModified, newData.StatusId, newData.Sort, newData.RoleName, newData.Remark, newData.Id)
-	}, zeroVueSysRoleIdKey, zeroVueSysRoleRoleNameKey)
+	}, zeroReactSysRoleIdKey, zeroReactSysRoleRoleNameKey)
 	return err
 }
 
@@ -218,17 +218,17 @@ func (m *defaultSysRoleModel) UpdateRoleStatus(ctx context.Context, id int64, st
 		return err
 	}
 
-	zeroVueSysRoleIdKey := fmt.Sprintf("%s%v", cacheZeroVueSysRoleIdPrefix, data.Id)
-	zeroVueSysRoleRoleNameKey := fmt.Sprintf("%s%v", cacheZeroVueSysRoleRoleNamePrefix, data.RoleName)
+	zeroReactSysRoleIdKey := fmt.Sprintf("%s%v", cacheZeroReactSysRoleIdPrefix, data.Id)
+	zeroReactSysRoleRoleNameKey := fmt.Sprintf("%s%v", cacheZeroReactSysRoleRoleNamePrefix, data.RoleName)
 	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set status_id = ? ,gmt_modified = ? where `id` = ?", m.table)
 		return conn.ExecCtx(ctx, query, statusId, time.Now(), id)
-	}, zeroVueSysRoleIdKey, zeroVueSysRoleRoleNameKey)
+	}, zeroReactSysRoleIdKey, zeroReactSysRoleRoleNameKey)
 	return err
 }
 
 func (m *defaultSysRoleModel) formatPrimary(primary interface{}) string {
-	return fmt.Sprintf("%s%v", cacheZeroVueSysRoleIdPrefix, primary)
+	return fmt.Sprintf("%s%v", cacheZeroReactSysRoleIdPrefix, primary)
 }
 
 func (m *defaultSysRoleModel) queryPrimary(ctx context.Context, conn sqlx.SqlConn, v, primary interface{}) error {

@@ -2,7 +2,7 @@ syntax = "v1"
 
 info(
 	title: "zero-template-react"
-	desc: "vue版本模板"
+	desc: "react版本模板"
 	author: "liufeihua"
 	email: "1002219331@qq.com"
 	version: "v1.0"

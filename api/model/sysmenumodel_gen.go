@@ -22,7 +22,7 @@ var (
 	sysMenuRowsExpectAutoSet   = strings.Join(stringx.Remove(sysMenuFieldNames, "`id`", "`create_time`", "`update_time`", "`create_at`", "`update_at`"), ",")
 	sysMenuRowsWithPlaceHolder = strings.Join(stringx.Remove(sysMenuFieldNames, "`id`", "`gmt_create`", "`create_time`", "`update_time`", "`create_at`", "`update_at`"), "=?,") + "=?"
 
-	cacheZeroVueSysMenuIdPrefix = "cache:zeroVue:sysMenu:id:"
+	cacheZeroReactSysMenuIdPrefix = "cache:zeroReact:sysMenu:id:"
 )
 
 type (
@@ -66,18 +66,18 @@ func newSysMenuModel(conn sqlx.SqlConn, c cache.CacheConf) *defaultSysMenuModel 
 }
 
 func (m *defaultSysMenuModel) Delete(ctx context.Context, id int64) error {
-	zeroVueSysMenuIdKey := fmt.Sprintf("%s%v", cacheZeroVueSysMenuIdPrefix, id)
+	zeroReactSysMenuIdKey := fmt.Sprintf("%s%v", cacheZeroReactSysMenuIdPrefix, id)
 	_, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("delete from %s where `id` = ?", m.table)
 		return conn.ExecCtx(ctx, query, id)
-	}, zeroVueSysMenuIdKey)
+	}, zeroReactSysMenuIdKey)
 	return err
 }
 
 func (m *defaultSysMenuModel) FindOne(ctx context.Context, id int64) (*SysMenu, error) {
-	zeroVueSysMenuIdKey := fmt.Sprintf("%s%v", cacheZeroVueSysMenuIdPrefix, id)
+	zeroReactSysMenuIdKey := fmt.Sprintf("%s%v", cacheZeroReactSysMenuIdPrefix, id)
 	var resp SysMenu
-	err := m.QueryRowCtx(ctx, &resp, zeroVueSysMenuIdKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
+	err := m.QueryRowCtx(ctx, &resp, zeroReactSysMenuIdKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
 		query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", sysMenuRows, m.table)
 		return conn.QueryRowCtx(ctx, v, query, id)
 	})
@@ -138,34 +138,34 @@ func (m *defaultSysMenuModel) Count(ctx context.Context) (int64, error) {
 }
 
 func (m *defaultSysMenuModel) Insert(ctx context.Context, data *SysMenu) (sql.Result, error) {
-	zeroVueSysMenuIdKey := fmt.Sprintf("%s%v", cacheZeroVueSysMenuIdPrefix, data.Id)
+	zeroReactSysMenuIdKey := fmt.Sprintf("%s%v", cacheZeroReactSysMenuIdPrefix, data.Id)
 	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, sysMenuRowsExpectAutoSet)
 		return conn.ExecCtx(ctx, query, data.GmtCreate, data.GmtModified, data.StatusId, data.Sort, data.ParentId, data.MenuName, data.MenuUrl, data.ApiUrl, data.MenuIcon, data.Remark, data.MenuType)
-	}, zeroVueSysMenuIdKey)
+	}, zeroReactSysMenuIdKey)
 	return ret, err
 }
 
 func (m *defaultSysMenuModel) Update(ctx context.Context, data *SysMenu) error {
-	zeroVueSysMenuIdKey := fmt.Sprintf("%s%v", cacheZeroVueSysMenuIdPrefix, data.Id)
+	zeroReactSysMenuIdKey := fmt.Sprintf("%s%v", cacheZeroReactSysMenuIdPrefix, data.Id)
 	_, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, sysMenuRowsWithPlaceHolder)
 		return conn.ExecCtx(ctx, query, data.GmtModified, data.StatusId, data.Sort, data.ParentId, data.MenuName, data.MenuUrl, data.ApiUrl, data.MenuIcon, data.Remark, data.MenuType, data.Id)
-	}, zeroVueSysMenuIdKey)
+	}, zeroReactSysMenuIdKey)
 	return err
 }
 
 func (m *defaultSysMenuModel) UpdateMenuStatus(ctx context.Context, id int64, statusId int64) error {
-	zeroVueSysMenuIdKey := fmt.Sprintf("%s%v", cacheZeroVueSysMenuIdPrefix, id)
+	zeroReactSysMenuIdKey := fmt.Sprintf("%s%v", cacheZeroReactSysMenuIdPrefix, id)
 	_, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set status_id = ? ,gmt_modified = ? where `id` = ?", m.table)
-		return conn.ExecCtx(ctx, query, statusId,time.Now(), id)
-	}, zeroVueSysMenuIdKey)
+		return conn.ExecCtx(ctx, query, statusId, time.Now(), id)
+	}, zeroReactSysMenuIdKey)
 	return err
 }
 
 func (m *defaultSysMenuModel) formatPrimary(primary interface{}) string {
-	return fmt.Sprintf("%s%v", cacheZeroVueSysMenuIdPrefix, primary)
+	return fmt.Sprintf("%s%v", cacheZeroReactSysMenuIdPrefix, primary)
 }
 
 func (m *defaultSysMenuModel) queryPrimary(ctx context.Context, conn sqlx.SqlConn, v, primary interface{}) error {

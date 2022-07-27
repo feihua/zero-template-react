@@ -23,8 +23,8 @@ var (
 	sysUserRowsExpectAutoSet   = strings.Join(stringx.Remove(sysUserFieldNames, "`id`", "`create_time`", "`update_time`", "`create_at`", "`update_at`"), ",")
 	sysUserRowsWithPlaceHolder = strings.Join(stringx.Remove(sysUserFieldNames, "`id`", "`gmt_create`", "`create_time`", "`update_time`", "`create_at`", "`update_at`"), "=?,") + "=?"
 
-	cacheZeroVueSysUserIdPrefix     = "cache:zeroVue:sysUser:id:"
-	cacheZeroVueSysUserMobilePrefix = "cache:zeroVue:sysUser:mobile:"
+	cacheZeroReactSysUserIdPrefix     = "cache:zeroReact:sysUser:id:"
+	cacheZeroReactSysUserMobilePrefix = "cache:zeroReact:sysUser:mobile:"
 )
 
 type (
@@ -71,19 +71,19 @@ func (m *defaultSysUserModel) Delete(ctx context.Context, id int64) error {
 		return err
 	}
 
-	zeroVueSysUserIdKey := fmt.Sprintf("%s%v", cacheZeroVueSysUserIdPrefix, id)
-	zeroVueSysUserMobileKey := fmt.Sprintf("%s%v", cacheZeroVueSysUserMobilePrefix, data.Mobile)
+	zeroReactSysUserIdKey := fmt.Sprintf("%s%v", cacheZeroReactSysUserIdPrefix, id)
+	zeroReactSysUserMobileKey := fmt.Sprintf("%s%v", cacheZeroReactSysUserMobilePrefix, data.Mobile)
 	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("delete from %s where `id` = ?", m.table)
 		return conn.ExecCtx(ctx, query, id)
-	}, zeroVueSysUserIdKey, zeroVueSysUserMobileKey)
+	}, zeroReactSysUserIdKey, zeroReactSysUserMobileKey)
 	return err
 }
 
 func (m *defaultSysUserModel) FindOne(ctx context.Context, id int64) (*SysUser, error) {
-	zeroVueSysUserIdKey := fmt.Sprintf("%s%v", cacheZeroVueSysUserIdPrefix, id)
+	zeroReactSysUserIdKey := fmt.Sprintf("%s%v", cacheZeroReactSysUserIdPrefix, id)
 	var resp SysUser
-	err := m.QueryRowCtx(ctx, &resp, zeroVueSysUserIdKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
+	err := m.QueryRowCtx(ctx, &resp, zeroReactSysUserIdKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
 		query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", sysUserRows, m.table)
 		return conn.QueryRowCtx(ctx, v, query, id)
 	})
@@ -98,9 +98,9 @@ func (m *defaultSysUserModel) FindOne(ctx context.Context, id int64) (*SysUser, 
 }
 
 func (m *defaultSysUserModel) FindOneByMobile(ctx context.Context, mobile string) (*SysUser, error) {
-	zeroVueSysUserMobileKey := fmt.Sprintf("%s%v", cacheZeroVueSysUserMobilePrefix, mobile)
+	zeroReactSysUserMobileKey := fmt.Sprintf("%s%v", cacheZeroReactSysUserMobilePrefix, mobile)
 	var resp SysUser
-	err := m.QueryRowIndexCtx(ctx, &resp, zeroVueSysUserMobileKey, m.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {
+	err := m.QueryRowIndexCtx(ctx, &resp, zeroReactSysUserMobileKey, m.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {
 		query := fmt.Sprintf("select %s from %s where `mobile` = ? limit 1", sysUserRows, m.table)
 		if err := conn.QueryRowCtx(ctx, &resp, query, mobile); err != nil {
 			return nil, err
@@ -175,12 +175,12 @@ func (m *defaultSysUserModel) Count(ctx context.Context, mobile string, statusId
 }
 
 func (m *defaultSysUserModel) Insert(ctx context.Context, data *SysUser) (sql.Result, error) {
-	zeroVueSysUserIdKey := fmt.Sprintf("%s%v", cacheZeroVueSysUserIdPrefix, data.Id)
-	zeroVueSysUserMobileKey := fmt.Sprintf("%s%v", cacheZeroVueSysUserMobilePrefix, data.Mobile)
+	zeroReactSysUserIdKey := fmt.Sprintf("%s%v", cacheZeroReactSysUserIdPrefix, data.Id)
+	zeroReactSysUserMobileKey := fmt.Sprintf("%s%v", cacheZeroReactSysUserMobilePrefix, data.Mobile)
 	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?)", m.table, sysUserRowsExpectAutoSet)
 		return conn.ExecCtx(ctx, query, data.GmtCreate, data.GmtModified, data.StatusId, data.Sort, data.UserNo, data.Mobile, data.RealName, data.Remark)
-	}, zeroVueSysUserIdKey, zeroVueSysUserMobileKey)
+	}, zeroReactSysUserIdKey, zeroReactSysUserMobileKey)
 	return ret, err
 }
 
@@ -190,12 +190,12 @@ func (m *defaultSysUserModel) Update(ctx context.Context, newData *SysUser) erro
 		return err
 	}
 
-	zeroVueSysUserIdKey := fmt.Sprintf("%s%v", cacheZeroVueSysUserIdPrefix, data.Id)
-	zeroVueSysUserMobileKey := fmt.Sprintf("%s%v", cacheZeroVueSysUserMobilePrefix, data.Mobile)
+	zeroReactSysUserIdKey := fmt.Sprintf("%s%v", cacheZeroReactSysUserIdPrefix, data.Id)
+	zeroReactSysUserMobileKey := fmt.Sprintf("%s%v", cacheZeroReactSysUserMobilePrefix, data.Mobile)
 	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, sysUserRowsWithPlaceHolder)
 		return conn.ExecCtx(ctx, query, newData.GmtModified, newData.StatusId, newData.Sort, newData.UserNo, newData.Mobile, newData.RealName, newData.Remark, newData.Id)
-	}, zeroVueSysUserIdKey, zeroVueSysUserMobileKey)
+	}, zeroReactSysUserIdKey, zeroReactSysUserMobileKey)
 	return err
 }
 
@@ -205,12 +205,12 @@ func (m *defaultSysUserModel) UpdatePassword(ctx context.Context, id int64, pass
 		return err
 	}
 
-	zeroVueSysUserIdKey := fmt.Sprintf("%s%v", cacheZeroVueSysUserIdPrefix, data.Id)
-	zeroVueSysUserMobileKey := fmt.Sprintf("%s%v", cacheZeroVueSysUserMobilePrefix, data.Mobile)
+	zeroReactSysUserIdKey := fmt.Sprintf("%s%v", cacheZeroReactSysUserIdPrefix, data.Id)
+	zeroReactSysUserMobileKey := fmt.Sprintf("%s%v", cacheZeroReactSysUserMobilePrefix, data.Mobile)
 	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set password = ? where id = ?", m.table)
 		return conn.ExecCtx(ctx, query, password, id)
-	}, zeroVueSysUserIdKey, zeroVueSysUserMobileKey)
+	}, zeroReactSysUserIdKey, zeroReactSysUserMobileKey)
 	return err
 
 }
@@ -221,17 +221,17 @@ func (m *defaultSysUserModel) UpdateUserStatus(ctx context.Context, id int64, st
 		return err
 	}
 
-	zeroVueSysUserIdKey := fmt.Sprintf("%s%v", cacheZeroVueSysUserIdPrefix, data.Id)
-	zeroVueSysUserMobileKey := fmt.Sprintf("%s%v", cacheZeroVueSysUserMobilePrefix, data.Mobile)
+	zeroReactSysUserIdKey := fmt.Sprintf("%s%v", cacheZeroReactSysUserIdPrefix, data.Id)
+	zeroReactSysUserMobileKey := fmt.Sprintf("%s%v", cacheZeroReactSysUserMobilePrefix, data.Mobile)
 	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set status_id = ? ,gmt_modified = ? where `id` = ?", m.table)
 		return conn.ExecCtx(ctx, query, statusId, time.Now(), id)
-	}, zeroVueSysUserIdKey, zeroVueSysUserMobileKey)
+	}, zeroReactSysUserIdKey, zeroReactSysUserMobileKey)
 	return err
 }
 
 func (m *defaultSysUserModel) formatPrimary(primary interface{}) string {
-	return fmt.Sprintf("%s%v", cacheZeroVueSysUserIdPrefix, primary)
+	return fmt.Sprintf("%s%v", cacheZeroReactSysUserIdPrefix, primary)
 }
 
 func (m *defaultSysUserModel) queryPrimary(ctx context.Context, conn sqlx.SqlConn, v, primary interface{}) error {

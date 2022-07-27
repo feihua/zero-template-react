@@ -22,7 +22,7 @@ var (
 	sysMenuRoleRowsExpectAutoSet   = strings.Join(stringx.Remove(sysMenuRoleFieldNames, "`id`", "`create_time`", "`update_time`", "`create_at`", "`update_at`"), ",")
 	sysMenuRoleRowsWithPlaceHolder = strings.Join(stringx.Remove(sysMenuRoleFieldNames, "`id`", "`create_time`", "`update_time`", "`create_at`", "`update_at`"), "=?,") + "=?"
 
-	cacheZeroVueSysMenuRoleIdPrefix = "cache:zeroVue:sysMenuRole:id:"
+	cacheZeroReactSysMenuRoleIdPrefix = "cache:zeroReact:sysMenuRole:id:"
 )
 
 type (
@@ -59,11 +59,11 @@ func newSysMenuRoleModel(conn sqlx.SqlConn, c cache.CacheConf) *defaultSysMenuRo
 }
 
 func (m *defaultSysMenuRoleModel) Delete(ctx context.Context, id int64) error {
-	zeroVueSysMenuRoleIdKey := fmt.Sprintf("%s%v", cacheZeroVueSysMenuRoleIdPrefix, id)
+	zeroReactSysMenuRoleIdKey := fmt.Sprintf("%s%v", cacheZeroReactSysMenuRoleIdPrefix, id)
 	_, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("delete from %s where `id` = ?", m.table)
 		return conn.ExecCtx(ctx, query, id)
-	}, zeroVueSysMenuRoleIdKey)
+	}, zeroReactSysMenuRoleIdKey)
 	return err
 }
 
@@ -74,9 +74,9 @@ func (m *defaultSysMenuRoleModel) DeleteByRoleId(ctx context.Context, id int64) 
 }
 
 func (m *defaultSysMenuRoleModel) FindOne(ctx context.Context, id int64) (*SysMenuRole, error) {
-	zeroVueSysMenuRoleIdKey := fmt.Sprintf("%s%v", cacheZeroVueSysMenuRoleIdPrefix, id)
+	zeroReactSysMenuRoleIdKey := fmt.Sprintf("%s%v", cacheZeroReactSysMenuRoleIdPrefix, id)
 	var resp SysMenuRole
-	err := m.QueryRowCtx(ctx, &resp, zeroVueSysMenuRoleIdKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
+	err := m.QueryRowCtx(ctx, &resp, zeroReactSysMenuRoleIdKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
 		query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", sysMenuRoleRows, m.table)
 		return conn.QueryRowCtx(ctx, v, query, id)
 	})
@@ -90,12 +90,11 @@ func (m *defaultSysMenuRoleModel) FindOne(ctx context.Context, id int64) (*SysMe
 	}
 }
 
-
 func (m *defaultSysMenuRoleModel) FindAllByRoleId(ctx context.Context, roleId int64) ([]int64, error) {
 
 	query := fmt.Sprintf("select menu_id from %s where role_id = ?", m.table)
 	var resp []int64
- 	err := m.QueryRowsNoCacheCtx(ctx, &resp, query, roleId)
+	err := m.QueryRowsNoCacheCtx(ctx, &resp, query, roleId)
 	switch err {
 	case nil:
 		return resp, nil
@@ -107,25 +106,25 @@ func (m *defaultSysMenuRoleModel) FindAllByRoleId(ctx context.Context, roleId in
 }
 
 func (m *defaultSysMenuRoleModel) Insert(ctx context.Context, data *SysMenuRole) (sql.Result, error) {
-	zeroVueSysMenuRoleIdKey := fmt.Sprintf("%s%v", cacheZeroVueSysMenuRoleIdPrefix, data.Id)
+	zeroReactSysMenuRoleIdKey := fmt.Sprintf("%s%v", cacheZeroReactSysMenuRoleIdPrefix, data.Id)
 	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?)", m.table, sysMenuRoleRowsExpectAutoSet)
 		return conn.ExecCtx(ctx, query, data.GmtCreate, data.GmtModified, data.StatusId, data.Sort, data.MenuId, data.RoleId)
-	}, zeroVueSysMenuRoleIdKey)
+	}, zeroReactSysMenuRoleIdKey)
 	return ret, err
 }
 
 func (m *defaultSysMenuRoleModel) Update(ctx context.Context, data *SysMenuRole) error {
-	zeroVueSysMenuRoleIdKey := fmt.Sprintf("%s%v", cacheZeroVueSysMenuRoleIdPrefix, data.Id)
+	zeroReactSysMenuRoleIdKey := fmt.Sprintf("%s%v", cacheZeroReactSysMenuRoleIdPrefix, data.Id)
 	_, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, sysMenuRoleRowsWithPlaceHolder)
 		return conn.ExecCtx(ctx, query, data.GmtCreate, data.GmtModified, data.StatusId, data.Sort, data.MenuId, data.RoleId, data.Id)
-	}, zeroVueSysMenuRoleIdKey)
+	}, zeroReactSysMenuRoleIdKey)
 	return err
 }
 
 func (m *defaultSysMenuRoleModel) formatPrimary(primary interface{}) string {
-	return fmt.Sprintf("%s%v", cacheZeroVueSysMenuRoleIdPrefix, primary)
+	return fmt.Sprintf("%s%v", cacheZeroReactSysMenuRoleIdPrefix, primary)
 }
 
 func (m *defaultSysMenuRoleModel) queryPrimary(ctx context.Context, conn sqlx.SqlConn, v, primary interface{}) error {
