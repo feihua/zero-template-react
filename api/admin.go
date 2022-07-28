@@ -7,7 +7,6 @@ import (
 	"github.com/zeromicro/go-zero/rest/httpx"
 	"net/http"
 	"zero-template-react/api/internal/common/errorx"
-
 	"zero-template-react/api/internal/config"
 	"zero-template-react/api/internal/handler"
 	"zero-template-react/api/internal/svc"
@@ -36,11 +35,12 @@ func main() {
 		case *errorx.CodeError:
 			return http.StatusOK, e.Data()
 		default:
+			fmt.Println(err.Error())
 			return http.StatusInternalServerError, nil
 		}
 	})
 
-	server.PrintRoutes()//print registered routes in rest servers
+	server.PrintRoutes() //print registered routes in rest servers
 	logx.DisableStat()
 	fmt.Printf("Starting server at %s:%d...\n", c.Host, c.Port)
 	server.Start()
