@@ -256,6 +256,7 @@ const TableList: React.FC<{}> = () => {
             <PlusOutlined /> 新建角色
           </Button>,
         ]}
+        // @ts-ignore
         request={(params, sorter, filter) => queryRole({ ...params, sorter, filter })}
         columns={columns}
         rowSelection={{

@@ -34,7 +34,7 @@ func (l *RoleUserSaveLogic) RoleUserSave(req types.RoleUserSaveReq) (resp *types
 
 	_ = l.svcCtx.RoleUserModel.DeleteByUserId(l.ctx, req.UserId)
 
-	for _, id := range req.RoleId {
+	for _, id := range req.RoleIds {
 		_, _ = l.svcCtx.RoleUserModel.Insert(l.ctx, &model.SysRoleUser{
 			GmtCreate:   time.Now(),
 			GmtModified: time.Now(),

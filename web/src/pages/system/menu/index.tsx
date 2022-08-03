@@ -109,7 +109,7 @@ const TableList: React.FC<{}> = () => {
       icon: <ExclamationCircleOutlined />,
       content: '删除的记录不能恢复,请确认!',
       onOk() {
-        handleRemoveOne(id).then((r) => {
+        handleRemoveOne(id).then(() => {
           actionRef.current?.reloadAndRest?.();
         });
       },
@@ -258,6 +258,7 @@ const TableList: React.FC<{}> = () => {
             <PlusOutlined /> 新建菜单
           </Button>,
         ]}
+        // @ts-ignore
         request={(params, sorter, filter) => queryMenuList({ ...params, sorter, filter })}
         columns={columns}
         rowSelection={{

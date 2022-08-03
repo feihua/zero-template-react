@@ -291,8 +291,8 @@ type RoleUserList struct {
 }
 
 type RoleUserSaveReq struct {
-	UserId int64   `json:"userId"`
-	RoleId []int64 `json:"roleId"`
+	UserId  int64   `json:"userId"`
+	RoleIds []int64 `json:"roleIds"`
 }
 
 type RoleUserSaveResp struct {

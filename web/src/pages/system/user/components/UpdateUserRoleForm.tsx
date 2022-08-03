@@ -1,23 +1,65 @@
-import React, {useEffect} from 'react';
-import {Form, Input, Modal, Select} from 'antd';
+import { Modal, Table, Tag } from 'antd';
+import { ColumnsType } from 'antd/es/table';
+import React, {useEffect, useState} from 'react';
 import { UserListItem} from '../data.d';
+import {userRoleList} from '../service';
 
 export interface UpdateFormProps {
   onCancel: () => void;
-  onSubmit: (values: Partial<UserListItem>) => void;
+  onSubmit: (values: { userId: number; roleIds: number[] }) => void;
   updateRoleModalVisible: boolean;
   currentData: Partial<UserListItem>;
 }
-const FormItem = Form.Item;
 
-const formLayout = {
-  labelCol: { span: 7 },
-  wrapperCol: { span: 13 },
-};
+interface DataRole {
+  id:       number;
+  statusID: number;
+  sort:     number;
+  roleName: string;
+  remark:   string;
+}
+
+const columns: ColumnsType<DataRole> = [
+  {
+    title: 'id',
+    dataIndex: 'id',
+  },
+  {
+    title: '角色名称',
+    dataIndex: 'roleName',
+  },
+  {
+    title: '排序排序',
+    dataIndex: 'sort',
+  },
+  {
+    title: '状态',
+    dataIndex: 'statusId',
+    render: (_, { statusId }) => (
+      <>
+        let color = statusId == 0 ? 'geekblue' : 'green';
+        return (
+          <Tag color={color} key={tag}>
+            {tag.toUpperCase()}
+          </Tag>
+        );
+      </>
+    ),
+    // valueEnum: {
+    //   0: {text: '禁用', status: 'Error'},
+    //   1: {text: '正常', status: 'Success'},
+    // },
+  },
+  {
+    title: '备注',
+    dataIndex: 'remark',
+  },
+];
+
 
 const UpdateUserRoleForm: React.FC<UpdateFormProps> = (props) => {
-  const [form] = Form.useForm();
-  const { Option } = Select;
+  const [roleList, setRoleList] = useState<DataRole[]>([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
   const {
     onSubmit,
@@ -26,92 +68,58 @@ const UpdateUserRoleForm: React.FC<UpdateFormProps> = (props) => {
     currentData,
   } = props;
 
-  useEffect(() => {
-    if (form && !updateRoleModalVisible) {
-      form.resetFields();
-    }
-  }, [props.updateRoleModalVisible]);
+  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
+    console.log('selectedRowKeys changed: ', selectedRowKeys);
+    setSelectedRowKeys(newSelectedRowKeys);
+  };
 
-  useEffect(() => {
-    if (currentData) {
-      form.setFieldsValue({
-        ...currentData,
-        // deptId:currentData.deptId+'',
-      });
-    }
-  }, [props.currentData]);
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+  };
 
   const handleSubmit = () => {
-    if (!form) return;
-    form.submit();
-  };
-
-  const handleFinish = (values: { [key: string]: any }) => {
     if (onSubmit) {
-      onSubmit(values);
+      const data1 = {
+        userId: currentData.id || 0,
+        roleIds: selectedRowKeys.map((i) => Number(i)),
+      };
+      onSubmit(data1);
     }
   };
 
-  const renderContent = () => {
-    return (
-      <>
-        <FormItem
-          name="id"
-          label="主键"
-          hidden
-        >
-          <Input id="update-id" placeholder="请输入主键" />
-        </FormItem>
-        <FormItem
-          name="realName"
-          label="用户名"
-        >
-          <Input id="update-name" placeholder={'请输入用户名'}/>
-        </FormItem>
-        <FormItem
-          name="mobile"
-          label="手机号"
-        >
-          <Input id="update-mobile" placeholder={'请输入手机号'}/>
-        </FormItem>
-        <FormItem
-          name="remark"
-          label="备注"
-        >
-          <Input id="update-remark" placeholder={'请输入备注'}/>
-        </FormItem>
-        <FormItem
-          name="status"
-          label="状态"
-        >
-          <Select id="statusID" placeholder={'请选择状态'}>
-            <Option value={0}>禁用</Option>
-            <Option value={1}>启用</Option>
-          </Select>
-        </FormItem>
-      </>
-    );
-  };
-
-
   const modalFooter = { okText: '保存', onOk: handleSubmit, onCancel };
+
+  useEffect(() => {
+    if (updateRoleModalVisible) {
+      setRoleList([]);
+      setSelectedRowKeys([]);
+      userRoleList({ userId: currentData.id || 0 }).then((res) => {
+        console.log(res);
+        setRoleList(res.data.allRoles);
+
+        if (res.data.allUserRoleIds) {
+          setSelectedRowKeys(res.data.allUserRoleIds)
+        }
+      });
+    }
+  }, [props.updateRoleModalVisible]);
 
   return (
     <Modal
       forceRender
       destroyOnClose
-      title="修改用户"
+      title="设置角色"
       visible={updateRoleModalVisible}
+      width={1200}
       {...modalFooter}
     >
-      <Form
-        {...formLayout}
-        form={form}
-        onFinish={handleFinish}
-      >
-        {renderContent()}
-      </Form>
+
+      <div>
+        <Table rowKey="id" rowSelection={rowSelection} columns={columns} dataSource={roleList} />
+      </div>
     </Modal>
+
   );
 };
 

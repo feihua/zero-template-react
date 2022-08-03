@@ -56,4 +56,21 @@ export async function updatePassword(params: UpdatePasswordParams) {
   });
 }
 
+export async function userRoleList(params: { userId: number}) {
+  return request('/api/system/role/userRoleList', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
 
+
+export async function updateUserRole(params: { userId: number ,roleIds: number[]}) {
+  return request('/api/system/role/userRoleSave', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}

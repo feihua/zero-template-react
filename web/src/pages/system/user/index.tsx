@@ -15,7 +15,7 @@ import {
   updateUser,
   addUser,
   removeUser,
-  updatePassword,
+  updatePassword, updateUserRole,
 } from './service';
 import {hasPm} from "@/utils/utils";
 
@@ -264,6 +264,7 @@ const TableList: React.FC<{}> = () => {
             <PlusOutlined/> 新建用户
           </Button>,
         ]}
+        // @ts-ignore
         request={(params, sorter, filter) => queryUserList({...params, sorter, filter})}
         columns={columns}
         rowSelection={{
@@ -333,13 +334,19 @@ const TableList: React.FC<{}> = () => {
       <UpdateUserRoleForm
         key={'UpdateUserRoleForm'}
         onSubmit={async (value) => {
-          const success = await handleUpdate(value);
+          const hide = message.loading('正在分配角色');
+          const success = await updateUserRole(value);
           if (success) {
+            hide();
+            message.success('分配角色成功，即将刷新');
             handleRoleModalVisible(false);
             setStepFormValues({});
             if (actionRef.current) {
               actionRef.current.reload();
             }
+          }else {
+            hide();
+            message.error('分配角色失败，请重试');
           }
         }}
         onCancel={() => {

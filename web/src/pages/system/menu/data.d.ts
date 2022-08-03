@@ -1,8 +1,8 @@
 export interface MenuListItem {
   id:       number;
-  statusID: number;
+  statusId: number;
   sort:     number;
-  parentID: number;
+  parentId: number;
   menuName: string;
   label:    string;
   menuURL:  string;
