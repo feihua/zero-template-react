@@ -47,6 +47,8 @@ func (l *UserSaveLogic) UserSave(req types.UserSaveReq) (resp *types.UserSaveRes
 			String: req.Remark,
 			Valid:  true,
 		},
+		//用户默认密码
+		Password: "123456",
 	})
 
 	if err != nil {

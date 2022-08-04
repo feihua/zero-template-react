@@ -45,10 +45,10 @@ func (l *UserLoginLogic) UserLogin(req *types.UserLoginReq) (resp *types.UserLog
 		return nil, errorx.NewDefaultError(err.Error())
 	}
 
-	//if userInfo.Password != in.Password {
-	//	logx.WithContext(l.ctx).Errorf("用户密码不正确,参数:%s", in.Password)
-	//	return nil, errors.New("用户密码不正确")
-	//}
+	if userInfo.Password != req.Password {
+		logx.WithContext(l.ctx).Errorf("用户密码不正确,参数:%s", req.Password)
+		return nil, errorx.NewDefaultError("用户密码不正确")
+	}
 
 	now := time.Now().Unix()
 	accessExpire := l.svcCtx.Config.Auth.AccessExpire

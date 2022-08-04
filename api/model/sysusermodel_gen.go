@@ -21,7 +21,7 @@ var (
 	sysUserFieldNames          = builder.RawFieldNames(&SysUser{})
 	sysUserRows                = strings.Join(sysUserFieldNames, ",")
 	sysUserRowsExpectAutoSet   = strings.Join(stringx.Remove(sysUserFieldNames, "`id`", "`create_time`", "`update_time`", "`create_at`", "`update_at`"), ",")
-	sysUserRowsWithPlaceHolder = strings.Join(stringx.Remove(sysUserFieldNames, "`id`", "`gmt_create`", "`create_time`", "`update_time`", "`create_at`", "`update_at`"), "=?,") + "=?"
+	sysUserRowsWithPlaceHolder = strings.Join(stringx.Remove(sysUserFieldNames, "`id`", "`gmt_create`", "`create_time`", "`update_time`", "`create_at`", "`update_at`", "`password`"), "=?,") + "=?"
 
 	cacheZeroReactSysUserIdPrefix     = "cache:zeroReact:sysUser:id:"
 	cacheZeroReactSysUserMobilePrefix = "cache:zeroReact:sysUser:mobile:"
@@ -55,6 +55,7 @@ type (
 		Mobile      string         `db:"mobile"`       // 手机
 		RealName    string         `db:"real_name"`    // 真实姓名
 		Remark      sql.NullString `db:"remark"`       // 备注
+		Password    string         `db:"password"`     // 密码
 	}
 )
 
@@ -178,8 +179,8 @@ func (m *defaultSysUserModel) Insert(ctx context.Context, data *SysUser) (sql.Re
 	zeroReactSysUserIdKey := fmt.Sprintf("%s%v", cacheZeroReactSysUserIdPrefix, data.Id)
 	zeroReactSysUserMobileKey := fmt.Sprintf("%s%v", cacheZeroReactSysUserMobilePrefix, data.Mobile)
 	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
-		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?)", m.table, sysUserRowsExpectAutoSet)
-		return conn.ExecCtx(ctx, query, data.GmtCreate, data.GmtModified, data.StatusId, data.Sort, data.UserNo, data.Mobile, data.RealName, data.Remark)
+		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, sysUserRowsExpectAutoSet)
+		return conn.ExecCtx(ctx, query, data.GmtCreate, data.GmtModified, data.StatusId, data.Sort, data.UserNo, data.Mobile, data.RealName, data.Remark, data.Password)
 	}, zeroReactSysUserIdKey, zeroReactSysUserMobileKey)
 	return ret, err
 }
