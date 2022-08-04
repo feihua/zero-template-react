@@ -49,9 +49,11 @@ export async function getInitialState(): Promise<{
   const fetchUserInfo = async () => {
     try {
       const msg = await queryCurrentUser();
+      // @ts-ignore
       localStorage.setItem('menuTree', JSON.stringify(msg.data.sysMenu));
+      // @ts-ignore
       localStorage.setItem('btnUrl', JSON.stringify(msg.data.btnMenu));
-      return msg;
+      return msg.data;
     } catch (error) {
       history.push(loginPath);
     }

@@ -78,6 +78,25 @@
     ],
   },
   {
+    path: '/account',
+    name: '账户相关',
+    icon: 'crown',
+    routes: [
+      {
+        name: '个人中心',
+        icon: 'table',
+        path: '/account/center',
+        component: './account/settings',
+      },
+      {
+        name: '个人设置',
+        icon: 'table',
+        path: '/account/settings',
+        component: './account/settings',
+      },
+    ],
+  },
+  {
     component: './404',
   },
 ];
