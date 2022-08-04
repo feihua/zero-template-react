@@ -345,6 +345,7 @@ const TableList: React.FC<{}> = () => {
             params={{
               id: row?.id,
             }}
+            // @ts-ignore
             columns={columns}
           />
         )}
