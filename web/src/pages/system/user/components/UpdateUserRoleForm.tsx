@@ -13,7 +13,7 @@ export interface UpdateFormProps {
 
 interface DataRole {
   id:       number;
-  statusID: number;
+  statusId: number;
   sort:     number;
   roleName: string;
   remark:   string;
@@ -37,18 +37,11 @@ const columns: ColumnsType<DataRole> = [
     dataIndex: 'statusId',
     render: (_, { statusId }) => (
       <>
-        let color = statusId == 0 ? 'geekblue' : 'green';
-        return (
-          <Tag color={color} key={tag}>
-            {tag.toUpperCase()}
-          </Tag>
-        );
+        <Tag color={statusId===1?'green':'red'}>
+          {statusId===1?'启动':'禁用'}
+        </Tag>
       </>
     ),
-    // valueEnum: {
-    //   0: {text: '禁用', status: 'Error'},
-    //   1: {text: '正常', status: 'Success'},
-    // },
   },
   {
     title: '备注',
