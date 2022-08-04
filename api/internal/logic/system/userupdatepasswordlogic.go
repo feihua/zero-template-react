@@ -24,6 +24,12 @@ func NewUserUpdatePasswordLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 }
 
 func (l *UserUpdatePasswordLogic) UserUpdatePassword(req types.UserUpdatePasswordReq) (resp *types.UserUpdatePasswordResp, err error) {
+
+	if req.MobilePsw != req.RePwd {
+		return nil, errorx.NewDefaultError("密码不一致")
+	}
+
+	//userId, _ := l.ctx.Value("userId").(json.Number).Int64()
 	err = l.svcCtx.UserModel.UpdatePassword(l.ctx, req.Id, req.MobilePsw)
 
 	if err != nil {

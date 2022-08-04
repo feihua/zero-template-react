@@ -137,7 +137,7 @@ type UserDeleteResp struct {
 }
 
 type UserUpdatePasswordReq struct {
-	Id        int64  `json:"id"`
+	Id        int64  `json:"id,optional"`
 	MobilePsw string `json:"mobilePsw"`
 	RePwd     string `json:"rePwd"`
 }
