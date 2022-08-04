@@ -209,8 +209,8 @@ func (m *defaultSysUserModel) UpdatePassword(ctx context.Context, id int64, pass
 	zeroReactSysUserIdKey := fmt.Sprintf("%s%v", cacheZeroReactSysUserIdPrefix, data.Id)
 	zeroReactSysUserMobileKey := fmt.Sprintf("%s%v", cacheZeroReactSysUserMobilePrefix, data.Mobile)
 	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
-		query := fmt.Sprintf("update %s set password = ? where id = ?", m.table)
-		return conn.ExecCtx(ctx, query, password, id)
+		query := fmt.Sprintf("update %s set password = ? ,gmt_modified = ?  where id = ?", m.table)
+		return conn.ExecCtx(ctx, query, password, time.Now(), id)
 	}, zeroReactSysUserIdKey, zeroReactSysUserMobileKey)
 	return err
 
