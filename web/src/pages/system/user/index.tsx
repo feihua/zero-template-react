@@ -66,10 +66,15 @@ const handleUpdate = async (fields: Partial<UserListItem>) => {
 const handleUpdatePassword = async (fields: Partial<UpdatePasswordParams>) => {
   const hide = message.loading('正在更新');
   try {
-    await updatePassword(fields as UpdatePasswordParams);
+    const resp = await updatePassword(fields as UpdatePasswordParams);
     hide();
-    message.success('更新成功');
-    return true;
+    if (resp.code != 200) {
+      message.error(resp.msg);
+      return false;
+    } else {
+      message.success('更新成功');
+      return true;
+    }
   } catch (error) {
     hide();
     message.error('更新失败请重试！');
@@ -344,7 +349,7 @@ const TableList: React.FC<{}> = () => {
             if (actionRef.current) {
               actionRef.current.reload();
             }
-          }else {
+          } else {
             hide();
             message.error('分配角色失败，请重试');
           }
